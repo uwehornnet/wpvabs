@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons')
+@import url('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css')
+@import url('https://npmcdn.com/flatpickr/dist/themes/airbnb.css')
+
+$brand: #4B60BC
+$white: #fff
+$dark: #424B5A
+$grey: #C2D1D9
+
+
+$padding: 10px 14px
+
+.vabs
+	margin-bottom: 35px
+	position: relative
+	&__loader
+		display: none
+		position: absolute
+		top: 0px
+		left: 0px
+		width: 100%
+		height: 100%
+		background: rgba($white, .8)
+		z-index: 1
+		align-items: center
+		justify-content: center
+		svg
+			width: 25%
+			height: auto
+			circle
+				fill: $brand
+	&.loading
+		.vabs__loader
+			display: flex
+	&__cart
+		border: 1px solid $grey
+
+		&--body
+			position: relative
+			input,
+			textarea
+				padding: 7px 14px
+				&.error
+					border: 1px solid orangered
+
+		&--confirmation
+			width: 100%
+			background: $white
+			font-size: .9rem
+			overflow: hidden
+			.confirmation
+				&__persdata
+					padding: 21px
+					border-bottom: 1px solid $grey
+					&--note
+						margin-top: 7px
+						font-style: italic
+				&__daterange
+					padding: 21px
+					border-bottom: 1px solid $grey
+				&__coursedata
+					padding: 21px
+					border-bottom: 1px solid $grey
+					.course
+						display: flex
+						flex-direction: row
+						justify-content: space-between
+						&--title
+							font-weight: bold
+				&__confirm
+					padding: 21px
+		&--header
+			background: $grey
+			color: $dark
+			padding: 21px
+			font-weight: bold
+			display: flex
+			flex-direction: row
+			justify-content: space-between
+			.meta
+				font-weight: normal
+
+		&--footer
+			padding: 21px
+			display: flex
+			justify-content: flex-end
+			.vabs__button
+				padding: 7px 14px
+				font-weight: normal
+				font-size: .9rem
+		&--thankyou
+			overflow: hidden
+			.thankyou
+				padding: 35px
+				&__svg
+					width: 25%
+					height: auto
+					margin: 0px auto
+					padding: 7px
+					svg
+						width: 90%
+						height: auto
+						polyline
+							stroke: limegreen
+							transform: scale(0)
+						circle
+							stroke-width: 14
+							stroke: limegreen
+							stroke-dasharray: 1200
+							stroke-dashoffset: 1200
+
+					&.success
+						svg
+							polyline
+								animation: success-polyline .4s ease .7s forwards
+							circle
+								animation: success-circle 1s ease forwards
+	&__stepper
+		overflow: hidden
+		&--step
+			overflow: hidden
+			border-bottom: 1px solid $grey
+			.courses
+				padding: 21px
+				p
+					font-weight: normal
+					font-size: .8rem
+				&__list
+					&--course
+						label
+							display: flex
+							align-items: center
+							input
+								margin-right: 14px
+							span
+								flex: 1
+								font-size: .9rem
+								small
+									display: block
+									font-weight: normal
+			.quantity
+				padding: 21px
+				label
+					font-weight: normal
+					font-size: .8rem
+			.vabsform
+				padding: 21px
+				p
+					font-weight: normal
+					font-size: .8rem
+				&__field
+					display: block
+					margin-bottom: 14px
+					&--horizontal
+						display: flex
+						flex-direction: row
+						justify-content: space-between
+						margin: 0px -7px 14px -7px
+						@media(max-width: 520px)
+							flex-direction: column
+							justify-content: flex-start
+							margin: 0px 0px 0px 0px
+						.vabsform__field
+							width: 50%
+							margin: 0px 7px 0px 7px
+							@media(max-width: 520px)
+								width: 100%
+
+					label
+						font-weight: normal
+						font-size: .8rem
+
+
+@keyframes success-circle
+	to
+		stroke-dashoffset: 0
+
+@keyframes success-polyline
+	to
+		transform: scale(1)
+

@@ -1,0 +1,38 @@
+<?php $languages = array (
+  'de' => 
+  array (
+    'cart_title' => 'Buchungs API',
+    'form_label_firstname' => 'Vorname',
+    'form_label_lastname' => 'Nachname',
+    'form_label_email' => 'Email Adresse',
+    'form_label_mobile' => 'Mobilnummer',
+    'form_label_datefrom' => 'Anreise',
+    'form_label_dateto' => 'Abreise',
+    'form_label_note' => 'Bemerkung',
+    'title_course' => 'Wähle deinen Kurs',
+    'title_quantity' => 'Wieviel Tage möchtest du buchen?',
+    'title_persdata' => 'Gib deine Daten ein.',
+    'button_step_1' => 'Kurs wählen',
+    'button_step_2' => 'Menge wählen',
+    'button_step_3' => 'Daten prüfen',
+    'button_step_4' => 'Kurs buchen',
+  ),
+  'en' => 
+  array (
+    'cart_title' => 'Booking API',
+    'form_label_firstname' => 'First Name',
+    'form_label_lastname' => 'Last Name',
+    'form_label_email' => 'Email Address',
+    'form_label_mobile' => 'Mobile',
+    'form_label_datefrom' => 'Arrival',
+    'form_label_dateto' => 'Departure',
+    'form_label_note' => 'Note',
+    'title_course' => 'Choose your course',
+    'title_quantity' => 'Choose your quantity',
+    'title_persdata' => 'Enter your personal details',
+    'button_step_1' => 'place course',
+    'button_step_2' => 'place quantity',
+    'button_step_3' => 'place details',
+    'button_step_4' => 'book',
+  ),
+);

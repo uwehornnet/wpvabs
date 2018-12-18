@@ -1,0 +1,318 @@
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);@import url(https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css);@import url(https://npmcdn.com/flatpickr/dist/themes/airbnb.css);.vabs {
+  margin-bottom: 35px;
+  position: relative;
+}
+
+.vabs__loader {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 1;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.vabs__loader svg {
+  width: 25%;
+  height: auto;
+}
+
+.vabs__loader svg circle {
+  fill: #4B60BC;
+}
+
+.vabs.loading .vabs__loader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.vabs__cart {
+  border: 1px solid #C2D1D9;
+}
+
+.vabs__cart--body {
+  position: relative;
+}
+
+.vabs__cart--body input,
+.vabs__cart--body textarea {
+  padding: 7px 14px;
+}
+
+.vabs__cart--body input.error,
+.vabs__cart--body textarea.error {
+  border: 1px solid orangered;
+}
+
+.vabs__cart--confirmation {
+  width: 100%;
+  background: #fff;
+  font-size: .9rem;
+  overflow: hidden;
+}
+
+.vabs__cart--confirmation .confirmation__persdata {
+  padding: 21px;
+  border-bottom: 1px solid #C2D1D9;
+}
+
+.vabs__cart--confirmation .confirmation__persdata--note {
+  margin-top: 7px;
+  font-style: italic;
+}
+
+.vabs__cart--confirmation .confirmation__daterange {
+  padding: 21px;
+  border-bottom: 1px solid #C2D1D9;
+}
+
+.vabs__cart--confirmation .confirmation__coursedata {
+  padding: 21px;
+  border-bottom: 1px solid #C2D1D9;
+}
+
+.vabs__cart--confirmation .confirmation__coursedata .course {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.vabs__cart--confirmation .confirmation__coursedata .course--title {
+  font-weight: bold;
+}
+
+.vabs__cart--confirmation .confirmation__confirm {
+  padding: 21px;
+}
+
+.vabs__cart--header {
+  background: #C2D1D9;
+  color: #424B5A;
+  padding: 21px;
+  font-weight: bold;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.vabs__cart--header .meta {
+  font-weight: normal;
+}
+
+.vabs__cart--footer {
+  padding: 21px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.vabs__cart--footer .vabs__button {
+  padding: 7px 14px;
+  font-weight: normal;
+  font-size: .9rem;
+}
+
+.vabs__cart--thankyou {
+  overflow: hidden;
+}
+
+.vabs__cart--thankyou .thankyou {
+  padding: 35px;
+}
+
+.vabs__cart--thankyou .thankyou__svg {
+  width: 25%;
+  height: auto;
+  margin: 0px auto;
+  padding: 7px;
+}
+
+.vabs__cart--thankyou .thankyou__svg svg {
+  width: 90%;
+  height: auto;
+}
+
+.vabs__cart--thankyou .thankyou__svg svg polyline {
+  stroke: limegreen;
+  -webkit-transform: scale(0);
+          transform: scale(0);
+}
+
+.vabs__cart--thankyou .thankyou__svg svg circle {
+  stroke-width: 14;
+  stroke: limegreen;
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+}
+
+.vabs__cart--thankyou .thankyou__svg.success svg polyline {
+  -webkit-animation: success-polyline .4s ease .7s forwards;
+          animation: success-polyline .4s ease .7s forwards;
+}
+
+.vabs__cart--thankyou .thankyou__svg.success svg circle {
+  -webkit-animation: success-circle 1s ease forwards;
+          animation: success-circle 1s ease forwards;
+}
+
+.vabs__stepper {
+  overflow: hidden;
+}
+
+.vabs__stepper--step {
+  overflow: hidden;
+  border-bottom: 1px solid #C2D1D9;
+}
+
+.vabs__stepper--step .courses {
+  padding: 21px;
+}
+
+.vabs__stepper--step .courses p {
+  font-weight: normal;
+  font-size: .8rem;
+}
+
+.vabs__stepper--step .courses__list--course label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.vabs__stepper--step .courses__list--course label input {
+  margin-right: 14px;
+}
+
+.vabs__stepper--step .courses__list--course label span {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  font-size: .9rem;
+}
+
+.vabs__stepper--step .courses__list--course label span small {
+  display: block;
+  font-weight: normal;
+}
+
+.vabs__stepper--step .quantity {
+  padding: 21px;
+}
+
+.vabs__stepper--step .quantity label {
+  font-weight: normal;
+  font-size: .8rem;
+}
+
+.vabs__stepper--step .vabsform {
+  padding: 21px;
+}
+
+.vabs__stepper--step .vabsform p {
+  font-weight: normal;
+  font-size: .8rem;
+}
+
+.vabs__stepper--step .vabsform__field {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.vabs__stepper--step .vabsform__field--horizontal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 0px -7px 14px -7px;
+}
+
+@media (max-width: 520px) {
+  .vabs__stepper--step .vabsform__field--horizontal {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    margin: 0px 0px 0px 0px;
+  }
+}
+
+.vabs__stepper--step .vabsform__field--horizontal .vabsform__field {
+  width: 50%;
+  margin: 0px 7px 0px 7px;
+}
+
+@media (max-width: 520px) {
+  .vabs__stepper--step .vabsform__field--horizontal .vabsform__field {
+    width: 100%;
+  }
+}
+
+.vabs__stepper--step .vabsform__field label {
+  font-weight: normal;
+  font-size: .8rem;
+}
+
+@-webkit-keyframes success-circle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes success-circle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@-webkit-keyframes success-polyline {
+  to {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes success-polyline {
+  to {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
