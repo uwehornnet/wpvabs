@@ -1,6 +1,28 @@
 <?php
 
+$route = $_SERVER['HTTP_REFERER'];
+
 include(realpath(dirname(__FILE__)) . '/../language/options.php');
+
+if(isset($_GET['method']) && $_GET['method'] === 'delete'){
+
+	if(array_key_exists($_GET['key'], $languages)){
+		unset($languages[$_GET['key']]);
+	}
+
+	$file = realpath(dirname(__FILE__)) . '/../language/options.php';
+
+	if(file_put_contents($file, '<?php $languages = ' . var_export($languages, true) . ';') > 0){
+		header("Location:" . $route, true, 302);
+		return;
+	}
+
+
+}
+
+
+
+
 
 if(array_key_exists($_POST['lang_name'], $languages)) {
 	foreach($_POST as $key => $value) {
@@ -18,11 +40,12 @@ if(array_key_exists($_POST['lang_name'], $languages)) {
 }
 
 
-$route = $_SERVER['HTTP_REFERER'];
+
 
 $file = realpath(dirname(__FILE__)) . '/../language/options.php';
 
-file_put_contents($file, '<?php $languages = ' . var_export($languages, true) . ';');
-
-header("Location:" . $route, true, 302);
+if(file_put_contents($file, '<?php $languages = ' . var_export($languages, true) . ';') > 0){
+	header("Location:" . $route, true, 302);
+	return;
+}
 

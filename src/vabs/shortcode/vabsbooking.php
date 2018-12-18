@@ -70,7 +70,8 @@ class VabsBooking
 	{
 
 		$form = '<form class="vabsform" id="vabs_persdata">';
-		$form .= '<p>' . $this->options['de']['title_persdata'] . '</p>';
+		$form .= '<input type="text" name="vabs_shorcode_lang" id="vabs_shorcode_lang" value="' . $atts['lang'] . '" style="display: none;">';
+		$form .= '<p>' . $this->options[$atts['lang']]['title_persdata'] . '</p>';
 		$form .= '<div class="vabsform__field--horizontal">';
 		$form .= '<div class="vabsform__field"><label for="lastname">' . $this->options[$atts['lang']]['form_label_lastname'] . '</label><input type="text" name="lastname" class="vabsform__field--input"></div>';
 		$form .= '<div class="vabsform__field"><label for="firstname">' . $this->options[$atts['lang']]['form_label_firstname'] . '</label><input type="text" name="firstname" class="vabsform__field--input"></div>';
@@ -83,7 +84,7 @@ class VabsBooking
 		$form .= '<div class="vabsform__field"><label for=anreise">' . $this->options[$atts['lang']]['form_label_datefrom'] . '</label><input type="text" name="anreise" class="vabsform__field--input"></div>';
 		$form .= '<div class="vabsform__field"><label for="abreise">' . $this->options[$atts['lang']]['form_label_dateto'] . '</label><input type="text" name="abreise" class="vabsform__field--input"></div>';
 		$form .= '</div>';
-		$form .= '<div class="vabsform__field"><label for="bemerkung">' . $this->options[$atts['lang']]['form_label_note'] . '</label><textarea class="vabsform__field--textarea"></textarea></div>';
+		$form .= '<div class="vabsform__field"><label for="note">' . $this->options[$atts['lang']]['form_label_note'] . '</label><textarea class="vabsform__field--textarea" name="note"></textarea></div>';
 		$form .= '</form>';
 
 		return $form;
@@ -103,7 +104,7 @@ class VabsBooking
 		$confirmation .= '<div class="confirmation__coursedata">';
 		$confirmation .= '<div class="course"><div class="course--title"></div><div class="course--qty"><span class="qty"></span><span class="qty-label">Tag(e)</span></div><div class="course--price"></div></div>';
 		$confirmation .= '</div>';
-		$confirmation .= '<div class="confirmation__confirm">With submit this form, you\'re accepting our disclaimer and data protection policies.</div>';
+		$confirmation .= '<div class="confirmation__confirm">' . $this->options[$atts['lang']]['cart_disclaimer_text'] . '</div>';
 
 		return $confirmation;
 
@@ -141,6 +142,7 @@ class VabsBooking
 		$thx .= '<div class="thankyou__svg">';
 		$thx .= '<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 388.83 388.298" enable-background="new 0 0 388.83 388.298" xml:space="preserve"><circle fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="194.548" cy="194.305" r="188.829"/><polyline fill="none" stroke="#000000" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="70.474,235.273 142.855,314.572 314.623,82.036 "/></svg>';
 		$thx .= '</div>';
+		$thx .= '<div class="thankyou__text">' . $this->options[$atts['lang']]['cart_thankyou_text'] . '</div>';
 		$thx .= '</div>';
 
 		return $thx;

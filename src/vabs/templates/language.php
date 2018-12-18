@@ -22,6 +22,10 @@
 								<div class="form">
 									<div class="form__flex">
 										<div class="form__flex--box">
+											<p>Cart Title</p>
+											<div class="form__field">
+												<input type="text" class="form__field--input" name="cart_title" value="<?= $value['cart_title'] ?>">
+											</div>
 											<p>Section Titles</p>
 											<div class="form__field">
 												<label>Section Title Course Selection</label>
@@ -34,6 +38,14 @@
 											<div class="form__field">
 												<label>Section Title Personal Data Selection</label>
 												<input type="text" class="form__field--input" name="title_persdata" value="<?= $value['title_persdata'] ?>">
+											</div>
+											<div class="form__field">
+												<label>Section Title Thank You</label>
+												<input type="text" class="form__field--input" name="cart_thankyou_title" value="<?= $value['cart_thankyou_title'] ?>">
+											</div>
+											<p>Disclaimer Text</p>
+											<div class="form__field">
+												<textarea name="cart_disclaimer_text" class="form__field--textarea"><?= $value['cart_disclaimer_text'] ?></textarea>
 											</div>
 										</div>
 										<div class="form__flex--box">
@@ -53,6 +65,10 @@
 											<div class="form__field">
 												<label>Labels fourth Step</label>
 												<input type="text" class="form__field--input" name="button_step_4" value="<?= $value['button_step_4'] ?>">
+											</div>
+											<p>Thank You Text</p>
+											<div class="form__field">
+												<textarea name="cart_thankyou_text" class="form__field--textarea"><?= $value['cart_thankyou_text'] ?></textarea>
 											</div>
 										</div>
 										<div class="form__flex--box">
@@ -88,7 +104,8 @@
 										</div>
 									</div>
 									<div class="form__field">
-										<input type="submit" class="button button-primary" value="Änderungen speichern">
+										<a href="<?php echo plugins_url('/vabs-api-form/src/vabs/controller/languagecontroller.php?method=delete&key=' . $key . '"'); ?>" class="button">delete</a>
+										<input type="submit" class="button button-primary" value="save changes">
 									</div>
 								</div>
 							</form>
@@ -101,8 +118,11 @@
 									<div class="form__flex--box">
 										<p>Name of new language</p>
 										<div class="form__field">
-											<label>Name</label>
 											<input type="text" class="form__field--input" name="lang_name" value="">
+										</div>
+										<p>Cart Title</p>
+										<div class="form__field">
+											<input type="text" class="form__field--input" name="cart_title" value="">
 										</div>
 										<p>Section Titles</p>
 										<div class="form__field">
@@ -116,6 +136,15 @@
 										<div class="form__field">
 											<label>Section Title Personal Data Selection</label>
 											<input type="text" class="form__field--input" name="title_persdata" value="">
+										</div>
+										<div class="form__field">
+											<label>Section Title Thank You</label>
+											<input type="text" class="form__field--input" name="cart_thankyou_title" value="">
+										</div>
+
+										<p>Disclaimer Text</p>
+										<div class="form__field">
+											<textarea name="cart_disclaimer_text" class="form__field--textarea"></textarea>
 										</div>
 									</div>
 									<div class="form__flex--box">
@@ -135,6 +164,10 @@
 										<div class="form__field">
 											<label>Labels fourth Step</label>
 											<input type="text" class="form__field--input" name="button_step_4" value="">
+										</div>
+										<p>Thank You Text</p>
+										<div class="form__field">
+											<textarea name="cart_thankyou_text" class="form__field--textarea"></textarea>
 										</div>
 									</div>
 									<div class="form__flex--box">
@@ -170,7 +203,7 @@
 									</div>
 								</div>
 								<div class="form__field">
-									<input type="submit" class="button button-primary" value="Änderungen speichern">
+									<input type="submit" class="button button-primary" value="save changes">
 								</div>
 							</div>
 						</form>

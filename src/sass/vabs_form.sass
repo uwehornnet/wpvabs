@@ -4,15 +4,18 @@
 
 $brand: #4B60BC
 $white: #fff
-$dark: #424B5A
-$grey: #C2D1D9
-
+//$dark: #424B5A
+//$grey: #C2D1D9
+$dark: #666
+$grey: lighten($dark, 55)
 
 $padding: 10px 14px
 
 .vabs
 	margin-bottom: 35px
 	position: relative
+	-webkit-font-smoothing: antialiased
+	-moz-osx-font-smoothing: grayscale
 	&__loader
 		display: none
 		position: absolute
@@ -25,7 +28,7 @@ $padding: 10px 14px
 		align-items: center
 		justify-content: center
 		svg
-			width: 25%
+			width: 15%
 			height: auto
 			circle
 				fill: $brand
@@ -113,6 +116,7 @@ $padding: 10px 14px
 						svg
 							polyline
 								animation: success-polyline .4s ease .7s forwards
+								transform-origin: 50% 50%
 							circle
 								animation: success-circle 1s ease forwards
 	&__stepper
@@ -130,11 +134,14 @@ $padding: 10px 14px
 						label
 							display: flex
 							align-items: center
+							justify-content: space-between
 							input
 								margin-right: 14px
 							span
 								flex: 1
 								font-size: .9rem
+								padding-right: 14px
+								white-space: nowrap
 								small
 									display: block
 									font-weight: normal
@@ -143,6 +150,9 @@ $padding: 10px 14px
 				label
 					font-weight: normal
 					font-size: .8rem
+				input:disabled
+					background: $grey
+					cursor: not-allowed
 			.vabsform
 				padding: 21px
 				p
@@ -169,6 +179,7 @@ $padding: 10px 14px
 					label
 						font-weight: normal
 						font-size: .8rem
+						display: block
 
 
 @keyframes success-circle

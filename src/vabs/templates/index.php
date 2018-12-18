@@ -16,7 +16,7 @@
 							<input type="text" class="form__field--input" name="client_id" value="<?= $this->config['client_id'] ?>">
 						</div>
 						<div class="form__field">
-							<input type="submit" class="button button-primary" value="Änderungen speichern">
+							<input type="submit" class="button button-primary" value="save changes">
 						</div>
 					</div>
 				</form>

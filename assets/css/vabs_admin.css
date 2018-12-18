@@ -165,6 +165,13 @@
   background: whitesmoke;
 }
 
+#vabs .vabs__card--body .form__field--textarea {
+  width: 100%;
+  display: block;
+  padding: 7px;
+  min-height: 200px;
+}
+
 #vabs .vabs__card--body .form__field--submit {
   background: #4B60BC;
   color: #fff;

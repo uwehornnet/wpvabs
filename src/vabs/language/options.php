@@ -1,7 +1,10 @@
 <?php $languages = array (
   'de' => 
   array (
-    'cart_title' => 'Buchungs API',
+    'cart_title' => 'Deinen Kurs jetzt buchen',
+    'cart_thankyou_title' => 'Vielen Dank für deine Buchung',
+    'cart_thankyou_text' => 'In Kürze erhältst du eine Buchungsbestätigung von uns.',
+    'cart_disclaimer_text' => 'Mit dem Absenden dieses Formulares stimmst du unseren <a href="http://wordpress.test/datenschutz/" target="blank">Datenschutzbestimmungen</a> zu.',
     'form_label_firstname' => 'Vorname',
     'form_label_lastname' => 'Nachname',
     'form_label_email' => 'Email Adresse',
@@ -20,6 +23,9 @@
   'en' => 
   array (
     'cart_title' => 'Booking API',
+    'cart_thankyou_title' => 'Thank you!',
+    'cart_thankyou_text' => 'Shortly you\'ll receive a booking confirmation.',
+    'cart_disclaimer_text' => 'In Kürze erhältst du eine Buchungsbestätigung von uns.',
     'form_label_firstname' => 'First Name',
     'form_label_lastname' => 'Last Name',
     'form_label_email' => 'Email Address',

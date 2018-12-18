@@ -1,5 +1,6 @@
 const flatpickr = require("flatpickr");
 const $ = require('jquery');
+import rangePlugin from '../../node_modules/flatpickr/dist/plugins/rangePlugin.js';
 
 /**
  * initialize Datepicker
@@ -19,7 +20,13 @@ flatpickr('input[name="anreise"], input[name="abreise"]',{
 	minDate: new Date(),
 	altInput: true,
 	dateFormat: "Y-m-d",
-	altFormat: "d.m.Y"
+	altFormat: "d.m.Y",
+	plugins: [new rangePlugin({ input: 'input[name="abreise"]'})],
+	onClose: function() {
+		let dates = this.input.defaultValue.split(' to ');
+		user.anreise = dates[0];
+		user.abreise = dates[1];
+	}
 });
 
 
@@ -28,6 +35,7 @@ flatpickr('input[name="anreise"], input[name="abreise"]',{
  * @type set main variables
  */
 const vabs = document.querySelector('.vabs');
+const lang = document.getElementById('vabs_shorcode_lang').value;
 const stepOne = document.getElementById('vabs__course--selector');
 const stepTwo = document.getElementById('vabs_booking_step_two');
 const stepThree = document.getElementById('vabs_booking_step_three');
@@ -53,17 +61,6 @@ const steps = [
 	'vabs__submit'
 ];
 
-/**
- *
- * @type labels based on steps
- */
-const buttonLabel = [
-	'',
-	'Kurs wählen',
-	'Menge wählen',
-	'Daten prüfen',
-	'Kurs buchen'
-];
 
 /**
  *
@@ -93,6 +90,8 @@ let course = {
 	id: null,
 	qty: 1,
 	name: null,
+	anzStunden: 0,
+	minBookableAmount: 0,
 	priceObj: {}
 };
 
@@ -119,10 +118,21 @@ function init() {
 
 	if(JSON.parse(response)){
 		updateStep(1)
-		AppendElements(JSON.parse(response), stepOne)
+
+		const courses = JSON.parse(response);
+
+		for(var key in courses){
+			var course = courses[key];
+
+			course.details = JSON.parse(ApiCall('get_course_details', {
+				id: course.id,
+				qty: course.minBookableAmount
+			}));
+		}
+
+		AppendElements(courses, stepOne)
 		setHight(stepOne)
 	}
-
 }
 
 
@@ -144,6 +154,12 @@ $('input[name="course"]').on('change', function() {
 	course.priceObj = JSON.parse(priceObj);
 
 	document.querySelector('#vabs__quantity--input').value = course.qty;
+	console.log(parseInt(course.qty) > 1);
+	if(parseInt(course.qty) > 1){
+		document.querySelector('#vabs__quantity--input').disabled = true;
+	}else{
+		document.querySelector('#vabs__quantity--input').disabled = false;
+	}
 	document.querySelector('.vabs__cart--header .title').innerHTML = course.name;
 	document.querySelector('.vabs__cart--header .meta__price').innerHTML = parseFloat(course.priceObj.price).toFixed(2);
 	document.querySelector('.vabs__cart--header .meta__unit').innerHTML = ' €';
@@ -174,9 +190,12 @@ document.querySelector('.vabs__button').addEventListener('click', function(e) {
 
 	if(e.target.dataset.target === steps[1])
 	{
-		// open quantity section
-		document.querySelector('#vabs__quantity--selector').style.maxHeight = document.querySelector('#vabs__quantity--selector').scrollHeight + 'px';
-		updateStep(2)
+		if(course.id){
+			// open quantity section
+			document.querySelector('#vabs__quantity--selector').style.maxHeight = document.querySelector('#vabs__quantity--selector').scrollHeight + 'px';
+			updateStep(2)
+		}
+
 	}
 	else if(e.target.dataset.target === steps[2])
 	{
@@ -187,17 +206,16 @@ document.querySelector('.vabs__button').addEventListener('click', function(e) {
 	}
 	else if(e.target.dataset.target === steps[3])
 	{
+		console.log(user)
 		form.each(function() {
-			if(this.value != '' && this.value != 'weiter') {
-				if(!this.name) {
-					user['note'] = this.value
-				}else{
-					user[this.name] = this.value;
-				}
+			if(this.value != '' || this.value != 'weiter' || this.name != 'vabs_shorcode_lang' || this.name != 'anreise' || this.name != 'abreise') {
+				user[this.name] = this.value;
 			}
 		});
 
 		let validation = validateForm()
+
+		console.log(validation);
 
 		if(validation) {
 			updateStep(4)
@@ -253,60 +271,52 @@ function validateForm() {
 
 	let validate = false;
 
+	if(!user.firstname || !user.lastname || !user.email || !user.mobile || !user.anreise || !user.abreise || !user.note){
+		validate = false;
+	}else{
+		validate = true
+	}
+
 	if(!user.firstname){
 		document.querySelector('input[name="firstname"]').classList.add('error')
-		validate = false
 	}else{
 		document.querySelector('input[name="firstname"]').classList.remove('error')
-		validate = true
 	}
 
 	if(!user.lastname){
 		document.querySelector('input[name="lastname"]').classList.add('error')
-		validate = false
 	}else{
 		document.querySelector('input[name="lastname"]').classList.remove('error')
-		validate = true
 	}
 
 	if(!user.email){
 		document.querySelector('input[name="email"]').classList.add('error')
-		validate = false
 	}else{
 		document.querySelector('input[name="email"]').classList.remove('error')
-		validate = true
 	}
 
 	if(!user.mobile){
 		document.querySelector('input[name="mobile"]').classList.add('error')
-		validate = false
 	}else{
 		document.querySelector('input[name="mobile"]').classList.remove('error')
-		validate = true
 	}
 
 	if(!user.anreise){
 		document.querySelector('input[name="anreise"]').nextSibling.classList.add('error')
-		validate = false
 	}else{
 		document.querySelector('input[name="anreise"]').nextSibling.classList.remove('error')
-		validate = true
 	}
 
 	if(!user.abreise){
-		document.querySelector('input[name="abreise"]').nextSibling.classList.add('error')
-		validate = false
+		document.querySelector('input[name="abreise"]').classList.add('error')
 	}else{
-		document.querySelector('input[name="abreise"]').nextSibling.classList.remove('error')
-		validate = true
+		document.querySelector('input[name="abreise"]').classList.remove('error')
 	}
 
 	if(!user.note){
 		document.querySelector('textarea').classList.add('error')
-		validate = false
 	}else{
 		document.querySelector('textarea').classList.remove('error')
-		validate = true
 	}
 
 	return validate;
@@ -319,6 +329,10 @@ function openConfirmation() {
 	const cart = document.querySelector('.vabs__cart--body');
 	const confirmation = document.querySelector('.vabs__cart--confirmation');
 	const stepper = document.querySelector('.vabs__stepper');
+
+	let dates = user.anreise.split(' to ');
+	user.anreise = dates[0];
+	user.abreise = dates[1];
 
 	confirmation.querySelector('.firstname').innerHTML = user.firstname;
 	confirmation.querySelector('.lastname').innerHTML = user.lastname;
@@ -334,6 +348,7 @@ function openConfirmation() {
 	stepper.style.maxHeight = '0px';
 	cart.style.maxHeight = confirmation.scrollHeight + 'px';
 	confirmation.style.maxHeight = confirmation.scrollHeight + 'px';
+
 }
 
 /**
@@ -345,7 +360,7 @@ function openThankYouPage() {
 	const confirmation = document.querySelector('.vabs__cart--confirmation');
 	const thx = document.querySelector('.vabs__cart--thankyou');
 
-	document.querySelector('.vabs__cart--header .title').innerHTML = 'Vielen Dank für deine Buchung';
+	document.querySelector('.vabs__cart--header .title').innerHTML = JSON.parse(vabs_obj.lang)[lang]['cart_thankyou_title'];
 	document.querySelector('.vabs__cart--header .meta__price').innerHTML = null;
 	document.querySelector('.vabs__cart--header .meta__unit').innerHTML = null;
 	document.querySelector('.vabs__button').style.display = 'none';
@@ -401,7 +416,7 @@ function submitForm() {
 function updateStep(value) {
 	step = steps[value];
 	button.dataset.target = step;
-	button.innerHTML = JSON.parse(vabs_obj.lang)['de']['button_step_' + value];
+	button.innerHTML = JSON.parse(vabs_obj.lang)[lang]['button_step_' + value];
 }
 
 /**
@@ -431,7 +446,7 @@ function AppendElements(data, element) {
 		var content = document.createElement('div');
 		content.classList.add('courses__list--course');
 		var label = document.createElement('label');
-		label.innerHTML = '<input type="radio" name="course" class="from__field--radio" data-qty="' + course.anzTage + '" data-title="' + course.name + '" value="' + course.id + '"><span><strong>' + course.name + '</strong><small>' + course.kurz_beschreibung + '</small></span>';
+		label.innerHTML = '<input type="radio" name="course" class="from__field--radio" data-qty="' + course.minBookableAmount + '" data-title="' + course.name + '" value="' + course.id + '"><span><strong>' + course.name + '</strong><small>' + course.kurz_beschreibung + '</small></span><span><strong>' + course.minBookableAmount + ' Tag(e)</strong><small>' + course.anzStunden + ' Stunde(n)</small></span><span class="price">' + parseFloat(course.details.price).toFixed(2) + '€</span>';
 		content.append(label);
 		element.querySelector('.courses__list').append(content);
 	}

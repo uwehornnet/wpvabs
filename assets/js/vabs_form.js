@@ -10445,10 +10445,15 @@ module.exports = __webpack_require__(5);
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_flatpickr_dist_plugins_rangePlugin_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_flatpickr_dist_plugins_rangePlugin_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__node_modules_flatpickr_dist_plugins_rangePlugin_js__);
 var flatpickr = __webpack_require__(3);
 var $ = __webpack_require__(0);
+
 
 /**
  * initialize Datepicker
@@ -10468,7 +10473,13 @@ flatpickr('input[name="anreise"], input[name="abreise"]', {
 	minDate: new Date(),
 	altInput: true,
 	dateFormat: "Y-m-d",
-	altFormat: "d.m.Y"
+	altFormat: "d.m.Y",
+	plugins: [new __WEBPACK_IMPORTED_MODULE_0__node_modules_flatpickr_dist_plugins_rangePlugin_js___default.a({ input: 'input[name="abreise"]' })],
+	onClose: function onClose() {
+		var dates = this.input.defaultValue.split(' to ');
+		user.anreise = dates[0];
+		user.abreise = dates[1];
+	}
 });
 
 /**
@@ -10476,6 +10487,7 @@ flatpickr('input[name="anreise"], input[name="abreise"]', {
  * @type set main variables
  */
 var vabs = document.querySelector('.vabs');
+var lang = document.getElementById('vabs_shorcode_lang').value;
 var stepOne = document.getElementById('vabs__course--selector');
 var stepTwo = document.getElementById('vabs_booking_step_two');
 var stepThree = document.getElementById('vabs_booking_step_three');
@@ -10494,12 +10506,6 @@ var step = 'vabs__course--selector';
  * @type name of differnt steps
  */
 var steps = ['vabs__course--selector', 'vabs__quantity--selector', 'vabs__persdata--selector', 'vabs__confirm', 'vabs__submit'];
-
-/**
- *
- * @type labels based on steps
- */
-var buttonLabel = ['', 'Kurs wählen', 'Menge wählen', 'Daten prüfen', 'Kurs buchen'];
 
 /**
  *
@@ -10529,6 +10535,8 @@ var course = {
 	id: null,
 	qty: 1,
 	name: null,
+	anzStunden: 0,
+	minBookableAmount: 0,
 	priceObj: {}
 };
 
@@ -10550,7 +10558,19 @@ function init() {
 
 	if (JSON.parse(response)) {
 		updateStep(1);
-		AppendElements(JSON.parse(response), stepOne);
+
+		var courses = JSON.parse(response);
+
+		for (var key in courses) {
+			var course = courses[key];
+
+			course.details = JSON.parse(ApiCall('get_course_details', {
+				id: course.id,
+				qty: course.minBookableAmount
+			}));
+		}
+
+		AppendElements(courses, stepOne);
 		setHight(stepOne);
 	}
 }
@@ -10573,6 +10593,12 @@ $('input[name="course"]').on('change', function () {
 	course.priceObj = JSON.parse(priceObj);
 
 	document.querySelector('#vabs__quantity--input').value = course.qty;
+	console.log(parseInt(course.qty) > 1);
+	if (parseInt(course.qty) > 1) {
+		document.querySelector('#vabs__quantity--input').disabled = true;
+	} else {
+		document.querySelector('#vabs__quantity--input').disabled = false;
+	}
 	document.querySelector('.vabs__cart--header .title').innerHTML = course.name;
 	document.querySelector('.vabs__cart--header .meta__price').innerHTML = parseFloat(course.priceObj.price).toFixed(2);
 	document.querySelector('.vabs__cart--header .meta__unit').innerHTML = ' €';
@@ -10601,26 +10627,27 @@ document.querySelector('.vabs__button').addEventListener('click', function (e) {
 	e.preventDefault();
 
 	if (e.target.dataset.target === steps[1]) {
-		// open quantity section
-		document.querySelector('#vabs__quantity--selector').style.maxHeight = document.querySelector('#vabs__quantity--selector').scrollHeight + 'px';
-		updateStep(2);
+		if (course.id) {
+			// open quantity section
+			document.querySelector('#vabs__quantity--selector').style.maxHeight = document.querySelector('#vabs__quantity--selector').scrollHeight + 'px';
+			updateStep(2);
+		}
 	} else if (e.target.dataset.target === steps[2]) {
 		// open persdata section
 		document.querySelector('#vabs__persdata--selector').style.maxHeight = document.querySelector('#vabs__persdata--selector').scrollHeight + 'px';
 
 		updateStep(3);
 	} else if (e.target.dataset.target === steps[3]) {
+		console.log(user);
 		form.each(function () {
-			if (this.value != '' && this.value != 'weiter') {
-				if (!this.name) {
-					user['note'] = this.value;
-				} else {
-					user[this.name] = this.value;
-				}
+			if (this.value != '' || this.value != 'weiter' || this.name != 'vabs_shorcode_lang' || this.name != 'anreise' || this.name != 'abreise') {
+				user[this.name] = this.value;
 			}
 		});
 
 		var validation = validateForm();
+
+		console.log(validation);
 
 		if (validation) {
 			updateStep(4);
@@ -10672,60 +10699,52 @@ function validateForm() {
 
 	var validate = false;
 
-	if (!user.firstname) {
-		document.querySelector('input[name="firstname"]').classList.add('error');
+	if (!user.firstname || !user.lastname || !user.email || !user.mobile || !user.anreise || !user.abreise || !user.note) {
 		validate = false;
 	} else {
-		document.querySelector('input[name="firstname"]').classList.remove('error');
 		validate = true;
+	}
+
+	if (!user.firstname) {
+		document.querySelector('input[name="firstname"]').classList.add('error');
+	} else {
+		document.querySelector('input[name="firstname"]').classList.remove('error');
 	}
 
 	if (!user.lastname) {
 		document.querySelector('input[name="lastname"]').classList.add('error');
-		validate = false;
 	} else {
 		document.querySelector('input[name="lastname"]').classList.remove('error');
-		validate = true;
 	}
 
 	if (!user.email) {
 		document.querySelector('input[name="email"]').classList.add('error');
-		validate = false;
 	} else {
 		document.querySelector('input[name="email"]').classList.remove('error');
-		validate = true;
 	}
 
 	if (!user.mobile) {
 		document.querySelector('input[name="mobile"]').classList.add('error');
-		validate = false;
 	} else {
 		document.querySelector('input[name="mobile"]').classList.remove('error');
-		validate = true;
 	}
 
 	if (!user.anreise) {
 		document.querySelector('input[name="anreise"]').nextSibling.classList.add('error');
-		validate = false;
 	} else {
 		document.querySelector('input[name="anreise"]').nextSibling.classList.remove('error');
-		validate = true;
 	}
 
 	if (!user.abreise) {
-		document.querySelector('input[name="abreise"]').nextSibling.classList.add('error');
-		validate = false;
+		document.querySelector('input[name="abreise"]').classList.add('error');
 	} else {
-		document.querySelector('input[name="abreise"]').nextSibling.classList.remove('error');
-		validate = true;
+		document.querySelector('input[name="abreise"]').classList.remove('error');
 	}
 
 	if (!user.note) {
 		document.querySelector('textarea').classList.add('error');
-		validate = false;
 	} else {
 		document.querySelector('textarea').classList.remove('error');
-		validate = true;
 	}
 
 	return validate;
@@ -10738,6 +10757,10 @@ function openConfirmation() {
 	var cart = document.querySelector('.vabs__cart--body');
 	var confirmation = document.querySelector('.vabs__cart--confirmation');
 	var stepper = document.querySelector('.vabs__stepper');
+
+	var dates = user.anreise.split(' to ');
+	user.anreise = dates[0];
+	user.abreise = dates[1];
 
 	confirmation.querySelector('.firstname').innerHTML = user.firstname;
 	confirmation.querySelector('.lastname').innerHTML = user.lastname;
@@ -10764,7 +10787,7 @@ function openThankYouPage() {
 	var confirmation = document.querySelector('.vabs__cart--confirmation');
 	var thx = document.querySelector('.vabs__cart--thankyou');
 
-	document.querySelector('.vabs__cart--header .title').innerHTML = 'Vielen Dank für deine Buchung';
+	document.querySelector('.vabs__cart--header .title').innerHTML = JSON.parse(vabs_obj.lang)[lang]['cart_thankyou_title'];
 	document.querySelector('.vabs__cart--header .meta__price').innerHTML = null;
 	document.querySelector('.vabs__cart--header .meta__unit').innerHTML = null;
 	document.querySelector('.vabs__button').style.display = 'none';
@@ -10816,7 +10839,7 @@ function submitForm() {
 function updateStep(value) {
 	step = steps[value];
 	button.dataset.target = step;
-	button.innerHTML = JSON.parse(vabs_obj.lang)['de']['button_step_' + value];
+	button.innerHTML = JSON.parse(vabs_obj.lang)[lang]['button_step_' + value];
 }
 
 /**
@@ -10846,7 +10869,7 @@ function AppendElements(data, element) {
 		var content = document.createElement('div');
 		content.classList.add('courses__list--course');
 		var label = document.createElement('label');
-		label.innerHTML = '<input type="radio" name="course" class="from__field--radio" data-qty="' + course.anzTage + '" data-title="' + course.name + '" value="' + course.id + '"><span><strong>' + course.name + '</strong><small>' + course.kurz_beschreibung + '</small></span>';
+		label.innerHTML = '<input type="radio" name="course" class="from__field--radio" data-qty="' + course.minBookableAmount + '" data-title="' + course.name + '" value="' + course.id + '"><span><strong>' + course.name + '</strong><small>' + course.kurz_beschreibung + '</small></span><span><strong>' + course.minBookableAmount + ' Tag(e)</strong><small>' + course.anzStunden + ' Stunde(n)</small></span><span class="price">' + parseFloat(course.details.price).toFixed(2) + '€</span>';
 		content.append(label);
 		element.querySelector('.courses__list').append(content);
 	}
@@ -13051,6 +13074,166 @@ function setHight(element) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* flatpickr v4.5.2, @license MIT */
+(function (global, factory) {
+     true ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global.rangePlugin = factory());
+}(this, (function () { 'use strict';
+
+    function rangePlugin(config) {
+      if (config === void 0) {
+        config = {};
+      }
+
+      return function (fp) {
+        var dateFormat = "",
+            secondInput,
+            _secondInputFocused,
+            _prevDates;
+
+        var createSecondInput = function createSecondInput() {
+          if (config.input) {
+            secondInput = config.input instanceof Element ? config.input : window.document.querySelector(config.input);
+          } else {
+            secondInput = fp._input.cloneNode();
+            secondInput.removeAttribute("id");
+            secondInput._flatpickr = undefined;
+          }
+
+          if (secondInput.value) {
+            var parsedDate = fp.parseDate(secondInput.value);
+            if (parsedDate) fp.selectedDates.push(parsedDate);
+          }
+
+          secondInput.setAttribute("data-fp-omit", "");
+
+          fp._bind(secondInput, ["focus", "click"], function () {
+            if (fp.selectedDates[1]) {
+              fp.latestSelectedDateObj = fp.selectedDates[1];
+
+              fp._setHoursFromDate(fp.selectedDates[1]);
+
+              fp.jumpToDate(fp.selectedDates[1]);
+            }
+            _secondInputFocused = true;
+            fp.isOpen = false;
+            fp.open(undefined, secondInput);
+          });
+
+          fp._bind(fp._input, ["focus", "click"], function (e) {
+            e.preventDefault();
+            fp.isOpen = false;
+            fp.open();
+          });
+
+          if (fp.config.allowInput) fp._bind(secondInput, "keydown", function (e) {
+            if (e.key === "Enter") {
+              fp.setDate([fp.selectedDates[0], secondInput.value], true, dateFormat);
+              secondInput.click();
+            }
+          });
+          if (!config.input) fp._input.parentNode && fp._input.parentNode.insertBefore(secondInput, fp._input.nextSibling);
+        };
+
+        var plugin = {
+          onParseConfig: function onParseConfig() {
+            fp.config.mode = "range";
+            dateFormat = fp.config.altInput ? fp.config.altFormat : fp.config.dateFormat;
+          },
+          onReady: function onReady() {
+            createSecondInput();
+            fp.config.ignoredFocusElements.push(secondInput);
+
+            if (fp.config.allowInput) {
+              fp._input.removeAttribute("readonly");
+
+              secondInput.removeAttribute("readonly");
+            } else {
+              secondInput.setAttribute("readonly", "readonly");
+            }
+
+            fp._bind(fp._input, "focus", function () {
+              fp.latestSelectedDateObj = fp.selectedDates[0];
+
+              fp._setHoursFromDate(fp.selectedDates[0]);
+              _secondInputFocused = false;
+              fp.jumpToDate(fp.selectedDates[0]);
+            });
+
+            if (fp.config.allowInput) fp._bind(fp._input, "keydown", function (e) {
+              if (e.key === "Enter") fp.setDate([fp._input.value, fp.selectedDates[1]], true, dateFormat);
+            });
+            fp.setDate(fp.selectedDates, false);
+            plugin.onValueUpdate(fp.selectedDates);
+          },
+          onPreCalendarPosition: function onPreCalendarPosition() {
+            if (_secondInputFocused) {
+              fp._positionElement = secondInput;
+              setTimeout(function () {
+                fp._positionElement = fp._input;
+              }, 0);
+            }
+          },
+          onChange: function onChange() {
+            if (!fp.selectedDates.length) {
+              setTimeout(function () {
+                if (fp.selectedDates.length) return;
+                secondInput.value = "";
+                _prevDates = [];
+              }, 10);
+            }
+
+            if (_secondInputFocused) {
+              setTimeout(function () {
+                secondInput.focus();
+              }, 0);
+            }
+          },
+          onDestroy: function onDestroy() {
+            if (!config.input) secondInput.parentNode && secondInput.parentNode.removeChild(secondInput);
+          },
+          onValueUpdate: function onValueUpdate(selDates) {
+            if (!secondInput) return;
+            _prevDates = !_prevDates || selDates.length >= _prevDates.length ? selDates.concat() : _prevDates;
+
+            if (_prevDates.length > selDates.length) {
+              var newSelectedDate = selDates[0];
+              var newDates = _secondInputFocused ? [_prevDates[0], newSelectedDate] : [newSelectedDate, _prevDates[1]];
+              fp.setDate(newDates, false);
+              _prevDates = newDates.concat();
+            }
+
+            var _fp$selectedDates$map = fp.selectedDates.map(function (d) {
+              return fp.formatDate(d, dateFormat);
+            });
+
+            var _fp$selectedDates$map2 = _fp$selectedDates$map[0];
+            fp._input.value = _fp$selectedDates$map2 === void 0 ? "" : _fp$selectedDates$map2;
+            var _fp$selectedDates$map3 = _fp$selectedDates$map[1];
+            secondInput.value = _fp$selectedDates$map3 === void 0 ? "" : _fp$selectedDates$map3;
+          }
+        };
+        return plugin;
+      };
+    }
+
+    return rangePlugin;
+
+})));
+
 
 /***/ })
 /******/ ]);
