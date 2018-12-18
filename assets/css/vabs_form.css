@@ -204,19 +204,13 @@
 }
 
 .vabs__stepper--step .courses__list--course label {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  display: grid;
+  grid-template-columns: 5% 55% 20% 20%;
 }
 
 .vabs__stepper--step .courses__list--course label input {
   margin-right: 14px;
+  margin-top: 10px;
 }
 
 .vabs__stepper--step .courses__list--course label span {
