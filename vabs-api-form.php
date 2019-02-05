@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Vabs API Form
+ * Plugin Name: API Connection to VABS
  * Description: Plugin to allow user to directly use the VABS API from a frontend form
  * Version: 1.0.0
  * Author: Uwe Horn
@@ -14,7 +14,7 @@ defined('ABSPATH') or die('You can not access this file.');
 
 define('PLUGINPATH', plugin_dir_path( __FILE__ ));
 
-
+include_once('src/vabs/helpers.php');
 include_once('src/vabs/dependencies.php');
 include_once('src/vabs/adminpage.php');
 include_once('src/vabs/shortcode/vabsbooking.php');

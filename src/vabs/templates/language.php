@@ -2,7 +2,7 @@
 	<div class="vabs">
 		<div class="vabs__card">
 			<div class="vabs__card--header">
-				<img src="<?php echo plugins_url('/vabs-api-form/assets/img/logo.png'); ?>" alt="logo">
+				<img src="<?php echo plugins_url('/wpvabs/assets/img/logo.png'); ?>" alt="logo">
 				<div class="navigation">
 					<div class="navigation__links">
 						<?php foreach($this->languages as $key => $index){ ?>
@@ -17,58 +17,51 @@
 				<div class="vabs__formlist">
 					<?php foreach($this->languages as $key => $value){ ?>
 						<div class="vabs__formlist--form" id="lang_<?= $key ?>">
-							<form action="<?php echo plugins_url('/vabs-api-form/src/vabs/controller/languagecontroller.php'); ?>" class="form" method="POST">
+							<form action="<?php echo plugins_url('/wpvabs/src/vabs/controller/languagecontroller.php'); ?>" class="form" method="POST">
 								<input type="text" name="lang_name" value="<?= $key ?>" style="display: none;">
 								<div class="form">
 									<div class="form__flex">
 										<div class="form__flex--box">
-											<p>Cart Title</p>
-											<div class="form__field">
-												<input type="text" class="form__field--input" name="cart_title" value="<?= $value['cart_title'] ?>">
-											</div>
 											<p>Section Titles</p>
 											<div class="form__field">
 												<label>Section Title Course Selection</label>
 												<input type="text" class="form__field--input" name="title_course" value="<?= $value['title_course'] ?>">
 											</div>
 											<div class="form__field">
-												<label>Section Title Quantity Selection</label>
-												<input type="text" class="form__field--input" name="title_quantity" value="<?= $value['title_quantity'] ?>">
-											</div>
-											<div class="form__field">
 												<label>Section Title Personal Data Selection</label>
 												<input type="text" class="form__field--input" name="title_persdata" value="<?= $value['title_persdata'] ?>">
 											</div>
 											<div class="form__field">
-												<label>Section Title Thank You</label>
-												<input type="text" class="form__field--input" name="cart_thankyou_title" value="<?= $value['cart_thankyou_title'] ?>">
+												<label>Section Title Confirmation</label>
+												<input type="text" class="form__field--input" name="title_confirmation"" value="<?= $value['title_confirmation'] ?>">
 											</div>
 											<p>Disclaimer Text</p>
 											<div class="form__field">
+												<label>You can you use [agb name=""] and [dsgvo name=""] for some placeholder tags, which represent links to your set disclaimer and imprint pages.</label>
 												<textarea name="cart_disclaimer_text" class="form__field--textarea"><?= $value['cart_disclaimer_text'] ?></textarea>
 											</div>
 										</div>
 										<div class="form__flex--box">
 											<p>Button Labels</p>
 											<div class="form__field">
-												<label>Labels first Step</label>
-												<input type="text" class="form__field--input" name="button_step_1" value="<?= $value['button_step_1'] ?>">
+												<label>Labels next</label>
+												<input type="text" class="form__field--input" name="button_next" value="<?= $value['button_next'] ?>">
 											</div>
 											<div class="form__field">
-												<label>Labels second Step</label>
-												<input type="text" class="form__field--input" name="button_step_2" value="<?= $value['button_step_2'] ?>">
+												<label>Labels booking</label>
+												<input type="text" class="form__field--input" name="button_book" value="<?= $value['button_book'] ?>">
 											</div>
 											<div class="form__field">
-												<label>Labels third Step</label>
-												<input type="text" class="form__field--input" name="button_step_3" value="<?= $value['button_step_3'] ?>">
+												<label>Labels contact</label>
+												<input type="text" class="form__field--input" name="button_contact" value="<?= $value['button_contact'] ?>">
 											</div>
 											<div class="form__field">
-												<label>Labels fourth Step</label>
-												<input type="text" class="form__field--input" name="button_step_4" value="<?= $value['button_step_4'] ?>">
+												<label>Labels message sent</label>
+												<input type="text" class="form__field--input" name="button_message_sent" value="<?= $value['button_message_sent'] ?>">
 											</div>
-											<p>Thank You Text</p>
 											<div class="form__field">
-												<textarea name="cart_thankyou_text" class="form__field--textarea"><?= $value['cart_thankyou_text'] ?></textarea>
+												<label>Labels success</label>
+												<input type="text" class="form__field--input" name="button_success" value="<?= $value['button_success'] ?>">
 											</div>
 										</div>
 										<div class="form__flex--box">
@@ -90,6 +83,14 @@
 												<input type="text" class="form__field--input" name="form_label_email" value="<?= $value['form_label_email'] ?>">
 											</div>
 											<div class="form__field">
+												<label>Interest</label>
+												<input type="text" class="form__field--input" name="form_label_interest" value="<?= $value['form_label_interest'] ?>">
+											</div>
+											<div class="form__field">
+												<label>Selection</label>
+												<input type="text" class="form__field--input" name="form_label_interest_inner" value="<?= $value['form_label_interest_inner'] ?>">
+											</div>
+											<div class="form__field">
 												<label>Arrival Date</label>
 												<input type="text" class="form__field--input" name="form_label_datefrom" value="<?= $value['form_label_datefrom'] ?>">
 											</div>
@@ -98,13 +99,13 @@
 												<input type="text" class="form__field--input" name="form_label_dateto" value="<?= $value['form_label_dateto'] ?>">
 											</div>
 											<div class="form__field">
-												<label>Departure Date</label>
+												<label>Message</label>
 												<input type="text" class="form__field--input" name="form_label_note" value="<?= $value['form_label_note'] ?>">
 											</div>
 										</div>
 									</div>
 									<div class="form__field">
-										<a href="<?php echo plugins_url('/vabs-api-form/src/vabs/controller/languagecontroller.php?method=delete&key=' . $key . '"'); ?>" class="button">delete</a>
+										<a href="<?php echo plugins_url('/wpvabs/src/vabs/controller/languagecontroller.php?method=delete&key=' . $key . '"'); ?>" class="button">delete</a>
 										<input type="submit" class="button button-primary" value="save changes">
 									</div>
 								</div>
@@ -112,97 +113,94 @@
 						</div>
 					<?php }; ?>
 					<div class="vabs__formlist--form" id="lang_new">
-						<form action="<?php echo plugins_url('/vabs-api-form/src/vabs/controller/languagecontroller.php'); ?>" class="form" method="POST">
+						<form action="<?php echo plugins_url('/wpvabs/src/vabs/controller/languagecontroller.php'); ?>" class="form" method="POST">
 							<div class="form">
 								<div class="form__flex">
 									<div class="form__flex--box">
-										<p>Name of new language</p>
-										<div class="form__field">
-											<input type="text" class="form__field--input" name="lang_name" value="">
-										</div>
-										<p>Cart Title</p>
-										<div class="form__field">
-											<input type="text" class="form__field--input" name="cart_title" value="">
-										</div>
 										<p>Section Titles</p>
 										<div class="form__field">
 											<label>Section Title Course Selection</label>
-											<input type="text" class="form__field--input" name="title_course" value="">
-										</div>
-										<div class="form__field">
-											<label>Section Title Quantity Selection</label>
-											<input type="text" class="form__field--input" name="title_quantity" value="">
+											<input type="text" class="form__field--input" name="title_course">
 										</div>
 										<div class="form__field">
 											<label>Section Title Personal Data Selection</label>
-											<input type="text" class="form__field--input" name="title_persdata" value="">
+											<input type="text" class="form__field--input" name="title_persdata">
 										</div>
 										<div class="form__field">
-											<label>Section Title Thank You</label>
-											<input type="text" class="form__field--input" name="cart_thankyou_title" value="">
+											<label>Section Title Confirmation</label>
+											<input type="text" class="form__field--input" name="title_confirmation">
 										</div>
-
 										<p>Disclaimer Text</p>
 										<div class="form__field">
+											<label>You can you use [agb name=""] and [dsgvo name=""] for some placeholder tags, which represent links to your set disclaimer and imprint pages.</label>
 											<textarea name="cart_disclaimer_text" class="form__field--textarea"></textarea>
 										</div>
 									</div>
 									<div class="form__flex--box">
 										<p>Button Labels</p>
 										<div class="form__field">
-											<label>Labels first Step</label>
-											<input type="text" class="form__field--input" name="button_step_1" value="">
+											<label>Labels next</label>
+											<input type="text" class="form__field--input" name="button_next">
 										</div>
 										<div class="form__field">
-											<label>Labels second Step</label>
-											<input type="text" class="form__field--input" name="button_step_2" value="">
+											<label>Labels booking</label>
+											<input type="text" class="form__field--input" name="button_book">
 										</div>
 										<div class="form__field">
-											<label>Labels third Step</label>
-											<input type="text" class="form__field--input" name="button_step_3" value="">
+											<label>Labels contact</label>
+											<input type="text" class="form__field--input" name="button_contact">
 										</div>
 										<div class="form__field">
-											<label>Labels fourth Step</label>
-											<input type="text" class="form__field--input" name="button_step_4" value="">
+											<label>Labels message sent</label>
+											<input type="text" class="form__field--input" name="button_message_sent">
 										</div>
-										<p>Thank You Text</p>
 										<div class="form__field">
-											<textarea name="cart_thankyou_text" class="form__field--textarea"></textarea>
+											<label>Labels success</label>
+											<input type="text" class="form__field--input" name="button_success">
 										</div>
 									</div>
 									<div class="form__flex--box">
 										<p>Personal Data Form Labels</p>
 										<div class="form__field">
 											<label>First Name</label>
-											<input type="text" class="form__field--input" name="form_label_firstname" value="">
+											<input type="text" class="form__field--input" name="form_label_firstname">
 										</div>
 										<div class="form__field">
 											<label>Last Name</label>
-											<input type="text" class="form__field--input" name="form_label_lastname" value="">
+											<input type="text" class="form__field--input" name="form_label_lastname">
 										</div>
 										<div class="form__field">
 											<label>Mobile</label>
-											<input type="text" class="form__field--input" name="form_label_mobile" value="">
+											<input type="text" class="form__field--input" name="form_label_mobile">
 										</div>
 										<div class="form__field">
 											<label>Email</label>
-											<input type="text" class="form__field--input" name="form_label_email" value="">
+											<input type="text" class="form__field--input" name="form_label_email">
+										</div>
+										<div class="form__field">
+											<label>Interest</label>
+											<input type="text" class="form__field--input" name="form_label_interest">
+										</div>
+										<div class="form__field">
+											<label>Selection</label>
+											<input type="text" class="form__field--input" name="form_label_interest_inner">
 										</div>
 										<div class="form__field">
 											<label>Arrival Date</label>
-											<input type="text" class="form__field--input" name="form_label_datefrom" value="">
+											<input type="text" class="form__field--input" name="form_label_datefrom">
 										</div>
 										<div class="form__field">
 											<label>Departure Date</label>
-											<input type="text" class="form__field--input" name="form_label_dateto" value="">
+											<input type="text" class="form__field--input" name="form_label_dateto">
 										</div>
 										<div class="form__field">
-											<label>Departure Date</label>
-											<input type="text" class="form__field--input" name="form_label_note" value="">
+											<label>Message</label>
+											<input type="text" class="form__field--input" name="form_label_note">
 										</div>
 									</div>
 								</div>
 								<div class="form__field">
+									<a href="<?php echo plugins_url('/wpvabs/src/vabs/controller/languagecontroller.php?method=delete&key=' . $key . '"'); ?>" class="button">delete</a>
 									<input type="submit" class="button button-primary" value="save changes">
 								</div>
 							</div>

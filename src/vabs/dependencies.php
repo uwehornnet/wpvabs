@@ -24,19 +24,19 @@ class Dependencies
 
 	public function enqueue_admin()
 	{
-		wp_enqueue_style('vabsadminstyle', plugins_url( '../../assets/css/vabs_admin.css', __FILE__ ));
-		wp_enqueue_script('vabsadmincript', plugins_url( '../../assets/js/vabs_admin.js', __FILE__ ), '', '', true);
-		wp_localize_script('vabsadmincript', 'vabs_ajax_obj', array( 'url' => plugins_url( '../../ajax/ajax_', __FILE__ ) ));
+		wp_enqueue_style('vabsadminstyle', plugins_url( 'wpvabs/assets/css/vabs_admin.css'));
+		wp_enqueue_script('vabsadmincript', plugins_url( 'wpvabs/assets/js/vabs_admin.js'), '', '', true);
+		wp_localize_script('vabsadmincript', 'vabs_ajax_obj', array( 'url' => plugins_url( 'wpvabs/ajax/ajax_') ));
 	}
 
 
 	public function enqueue()
 	{
-		wp_enqueue_style('vabsformstyle', plugins_url( '../../assets/css/vabs_form.css', __FILE__ ));
-		wp_enqueue_script('vabsformscript', plugins_url( '../../assets/js/vabs_form.js', __FILE__ ), '', '', true);
+		wp_enqueue_style('vabsformstyle', plugins_url( 'wpvabs/assets/css/vabs_form.css'));
+		wp_enqueue_script('vabsformscript', plugins_url( 'wpvabs/assets/js/vabs_form.js'), '', '', true);
 
 		wp_localize_script('vabsformscript', 'vabs_obj', array(
-				'ajax_url' => plugins_url( '../../ajax/ajax_', __FILE__ ),
+				'ajax_url' => plugins_url( 'wpvabs/ajax/ajax_'),
 				'lang' => json_encode($this->options)
 		));
 	}

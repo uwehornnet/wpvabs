@@ -22,9 +22,9 @@ class AdminPage
 
 	public function add_admin_pages()
 	{
-		add_menu_page('vabs plugin', 'VABS', 'manage_options', 'vabs_api_plugin', array($this, 'admin_index'), '', 110);
-		add_submenu_page('vabs_api_plugin', 'Shortcode', 'Shortcode', 'manage_options', 'vabs_generator', array($this, 'admin_generator'));
-		add_submenu_page('vabs_api_plugin', 'Language', 'Language', 'manage_options', 'vabs_language', array($this, 'admin_language'));
+		add_menu_page('vabs plugin', 'VABS', 'manage_options', 'wpvabs', array($this, 'admin_index'), '', 110);
+		add_submenu_page('wpvabs', 'Shortcode', 'Shortcode', 'manage_options', 'vabs_generator', array($this, 'admin_generator'));
+		add_submenu_page('wpvabs', 'Language', 'Language', 'manage_options', 'vabs_language', array($this, 'admin_language'));
 	}
 
 
