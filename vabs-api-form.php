@@ -14,7 +14,6 @@ defined('ABSPATH') or die('You can not access this file.');
 
 define('PLUGINPATH', plugin_dir_path( __FILE__ ));
 
-
 include_once('src/vabs/helpers.php');
 include_once('src/vabs/dependencies.php');
 include_once('src/vabs/adminpage.php');
