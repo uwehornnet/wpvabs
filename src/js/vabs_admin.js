@@ -1,4 +1,8 @@
+const version = '1.0';
+
+
 const $ = require('jquery');
+const url = vabs_ajax_obj.url + 'handler.php';
 
 const trigger_one = document.querySelectorAll('input[name="page"]');
 const step_two = document.getElementById('step_two');
@@ -11,6 +15,20 @@ const langNav = document.querySelector('.navigation__links');
 const links = document.querySelectorAll('.navigation__links--link');
 
 const saveOptions = document.getElementById('save_main_options');
+
+fetch(`https://api.github.com/repos/uwehornnet/wpvabs/releases`, {
+	method: 'GET',
+	headers: {
+		"Content-Type": "application/json",
+	},
+}).then((response) => {
+
+	return response.json();
+}).then((response) => {
+	if(version < parseFloat(response[0].tag_name.replace('v', ''))) {
+		updatePlugin(response[0].zipball_url)
+	}
+})
 
 
 if (saveOptions) {
@@ -69,8 +87,6 @@ if (links) {
 	}
 }
 
-const url = vabs_ajax_obj.url + 'handler.php';
-
 let outputData = {
 	courses: [],
 	type: '',
@@ -92,6 +108,15 @@ $('.from__field--radio--lang').each(function () {
 	});
 });
 
+function updatePlugin(zip) {
+	fetch(`${url}?method=update`, {
+		method: 'POST',
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({url: zip})
+	})
+}
 
 function output() {
 	outputData.courses = [];

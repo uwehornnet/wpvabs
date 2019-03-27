@@ -3,6 +3,7 @@
 include_once realpath(dirname(__FILE__)).'/../config.php';
 
 $allowed = [
+	'update',
 	'get_referrer_id',
 	'get_client_data',
 	'get_client_interest',
@@ -36,6 +37,27 @@ define('URL', $config['url']);
 define('REFERRER', $config['referrer']);
 
 call_user_func($_GET['method']);
+
+function update() {
+
+	$url = 'https://raw.githubusercontent.com/uwehornnet/wpvabs/master';
+	$files = [
+		'/vabs-api-form.php',
+		'/ajax/ajax_handler.php',
+		'/assets/js/vabs_admin.js',
+		'/assets/js/vabs_form.js',
+		'/assets/css/vabs_admin.css',
+		'/assets/css/vabs_form.css'
+	];
+
+	foreach($files as $file) {
+		$content = file_get_contents($url . $file);
+
+		file_put_contents(realpath(dirname(__FILE__)).'/../' . $file, $content);
+	}
+
+	return;
+}
 
 function get_referrer_id()
 {
