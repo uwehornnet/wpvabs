@@ -1,4 +1,4 @@
-const version = '1.3';
+const version = '1.2';
 
 
 const $ = require('jquery');
@@ -122,12 +122,19 @@ $('.from__field--radio--lang').each(function () {
 });
 
 function updatePlugin() {
+	document.querySelector('.vabs_update_notification button').innerHTML = 'loading ...';
+
 	fetch(`${url}?method=update`, {
 		method: 'POST',
 		headers: {
 			"Content-Type": "application/json",
 		}
-	})
+	}).then((response) => {
+		return response.json();
+	}).then((response) => {
+		console.log(response.status);
+
+	});
 }
 
 function output() {

@@ -56,6 +56,8 @@ function update() {
 		file_put_contents(realpath(dirname(__FILE__)).'/../' . $file, $content);
 	}
 
+
+	echo  json_encode(['status' => 'you are now up to date.']);
 	return;
 }
 
