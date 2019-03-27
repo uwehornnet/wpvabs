@@ -1,4 +1,4 @@
-const version = '1.0';
+const version = '1.1';
 
 
 const $ = require('jquery');
@@ -26,7 +26,20 @@ fetch(`https://api.github.com/repos/uwehornnet/wpvabs/releases`, {
 	return response.json();
 }).then((response) => {
 	if(version < parseFloat(response[0].tag_name.replace('v', ''))) {
-		updatePlugin()
+		let template = document.createElement('div');
+		template.classList.add('vabs_update_notification');
+		template.innerHTML = `
+			<strong>Updates available.</strong>
+			<p>To stay up to date with the vabs api connection, we recommend you to update the latest version.</p>
+			<button>update now</button>
+		`;
+
+		template.querySelector('button').addEventListener('click', function() {
+			updatePlugin()
+		});
+
+		document.querySelector('body').append(template);
+
 	}
 })
 
