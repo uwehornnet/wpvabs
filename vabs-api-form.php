@@ -14,15 +14,6 @@ defined('ABSPATH') or die('You can not access this file.');
 
 define('PLUGINPATH', plugin_dir_path( __FILE__ ));
 
-require 'plugin-update-checker/plugin-update-checker.php';
-$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-		'https://github.com/uwehornnet/wpvabs/',
-		__FILE__,
-		'wpvabs'
-);
-
-$myUpdateChecker->getVcsApi()->enableReleaseAssets();
-$myUpdateChecker->setBranch('master');
 
 include_once('src/vabs/helpers.php');
 include_once('src/vabs/dependencies.php');
