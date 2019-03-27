@@ -26,7 +26,7 @@ fetch(`https://api.github.com/repos/uwehornnet/wpvabs/releases`, {
 	return response.json();
 }).then((response) => {
 	if(version < parseFloat(response[0].tag_name.replace('v', ''))) {
-		updatePlugin(response[0].zipball_url)
+		updatePlugin()
 	}
 })
 
@@ -108,13 +108,12 @@ $('.from__field--radio--lang').each(function () {
 	});
 });
 
-function updatePlugin(zip) {
+function updatePlugin() {
 	fetch(`${url}?method=update`, {
 		method: 'POST',
 		headers: {
 			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({url: zip})
+		}
 	})
 }
 
