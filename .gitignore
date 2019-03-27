@@ -4,3 +4,4 @@ composer.json
 .DS_Store?
 package-lock.json
 mix-manifest.json
+config.php
