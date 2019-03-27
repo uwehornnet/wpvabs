@@ -155,44 +155,85 @@ export default class VabsWrapper {
 	flatPickr(elem) {
 		const anreiseElem = elem.querySelector('input[name="anreise"]');
 		const abreiseElem = elem.querySelector('input[name="abreise"]');
-		flatpickr(anreiseElem, {
-			locale: {
-				firstDayOfWeek: 1,
-				weekdays: {
-					shorthand: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-					longhand: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+		if(window.innerWidth > 767) {
+			flatpickr(anreiseElem, {
+				locale: {
+					firstDayOfWeek: 1,
+					weekdays: {
+						shorthand: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+						longhand: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+					},
+					months: {
+						shorthand: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+						longhand: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+					}
 				},
-				months: {
-					shorthand: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-					longhand: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
-				}
-			},
-			minDate: new Date(),
-			altInput: true,
-			dateFormat: "Y-m-d",
-			altFormat: "d.m.Y",
-			plugins: [new rangePlugin({input: abreiseElem})],
-		});
+				minDate: new Date(),
+				altInput: true,
+				dateFormat: "Y-m-d",
+				altFormat: "d.m.Y",
+				plugins: [new rangePlugin({input: abreiseElem})],
+			});
 
 
-		flatpickr(abreiseElem, {
-			locale: {
-				firstDayOfWeek: 1,
-				weekdays: {
-					shorthand: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-					longhand: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+			flatpickr(abreiseElem, {
+				locale: {
+					firstDayOfWeek: 1,
+					weekdays: {
+						shorthand: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+						longhand: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+					},
+					months: {
+						shorthand: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+						longhand: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+					}
 				},
-				months: {
-					shorthand: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-					longhand: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
-				}
-			},
-			minDate: new Date(),
-			altInput: true,
-			dateFormat: "Y-m-d",
-			altFormat: "d.m.Y",
-			plugins: [new rangePlugin({input: abreiseElem})],
-		});
+				minDate: new Date(),
+				altInput: true,
+				dateFormat: "Y-m-d",
+				altFormat: "d.m.Y",
+				plugins: [new rangePlugin({input: abreiseElem})],
+			});
+			
+		}else{
+			flatpickr(anreiseElem, {
+				locale: {
+					firstDayOfWeek: 1,
+					weekdays: {
+						shorthand: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+						longhand: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+					},
+					months: {
+						shorthand: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+						longhand: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+					}
+				},
+				minDate: new Date(),
+				altInput: true,
+				dateFormat: "Y-m-d",
+				altFormat: "d.m.Y",
+			});
+
+
+			flatpickr(abreiseElem, {
+				locale: {
+					firstDayOfWeek: 1,
+					weekdays: {
+						shorthand: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+						longhand: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+					},
+					months: {
+						shorthand: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+						longhand: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+					}
+				},
+				minDate: new Date(),
+				altInput: true,
+				dateFormat: "Y-m-d",
+				altFormat: "d.m.Y",
+			});
+		}
+
 	}
 
 	/**
