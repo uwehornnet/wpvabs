@@ -40,26 +40,60 @@ call_user_func($_GET['method']);
 
 function update() {
 
-	$url = 'https://raw.githubusercontent.com/uwehornnet/wpvabs/master';
+	$base = 'https://github.com/uwehornnet/wpvabs/archive/';
+	$version = $_POST['version'];
+	$extension = '.zip';
+
+	$url = $base . $version . $extension;
+
+	$path = realpath(dirname(__FILE__)).'/../';
+	$destination_path = $path . $version . $extension;
+	file_put_contents($destination_path, file_get_contents($url));
+
+	$folder = $path . $version;
+	$zip = new ZipArchive();
+	if($zip->open($destination_path)){
+		$zip->extractTo($folder);
+		$zip->close();
+	}
+
 	$files = [
-		'/vabs-api-form.php',
-		'/ajax/ajax_handler.php',
-		'/assets/js/vabs_admin.js',
-		'/assets/js/vabs_form.js',
-		'/assets/css/vabs_admin.css',
-		'/assets/css/vabs_form.css'
+			'/vabs-api-form.php',
+			'/ajax/ajax_handler.php',
+			'/assets/js/vabs_admin.js',
+			'/assets/js/vabs_form.js',
+			'/assets/css/vabs_admin.css',
+			'/assets/css/vabs_form.css'
 	];
 
+	$version_root_path = $folder . '/wpvabs-' . $version;
 	foreach($files as $file) {
-		$content = file_get_contents($url . $file);
-
+		$content = file_get_contents($version_root_path . $file);
 		file_put_contents(realpath(dirname(__FILE__)).'/../' . $file, $content);
 	}
 
+	unlink($destination_path);
+	rrmdir($folder);
 
-	echo  json_encode(['status' => 'you are now up to date.']);
+	echo  json_encode(['status' => 'you are running the vabs plugin on version' . $version]);
 	return;
 }
+
+function rrmdir($dir) {
+	if (is_dir($dir)) {
+		$objects = scandir($dir);
+		foreach ($objects as $object) {
+			if ($object != "." && $object != "..") {
+				if (filetype($dir."/".$object) == "dir")
+					rrmdir($dir."/".$object);
+				else unlink   ($dir."/".$object);
+			}
+		}
+		reset($objects);
+		rmdir($dir);
+	}
+}
+
 
 function get_referrer_id()
 {

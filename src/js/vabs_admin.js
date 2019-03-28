@@ -1,5 +1,4 @@
-const version = '1.3';
-
+const version = '1.1';
 
 const $ = require('jquery');
 const url = vabs_ajax_obj.url + 'handler.php';
@@ -9,12 +8,11 @@ const step_two = document.getElementById('step_two');
 const last_step = document.getElementById('last_step');
 const final = document.getElementById('final');
 const output_element = document.getElementById('vabs_shortcode_output_element');
-
 const languages = document.querySelector('.vabs__formlist');
 const langNav = document.querySelector('.navigation__links');
 const links = document.querySelectorAll('.navigation__links--link');
-
 const saveOptions = document.getElementById('save_main_options');
+
 
 fetch(`https://api.github.com/repos/uwehornnet/wpvabs/releases`, {
 	method: 'GET',
@@ -22,9 +20,9 @@ fetch(`https://api.github.com/repos/uwehornnet/wpvabs/releases`, {
 		"Content-Type": "application/json",
 	},
 }).then((response) => {
-
 	return response.json();
 }).then((response) => {
+	console.log(response)
 	if(version < parseFloat(response[0].tag_name.replace('v', ''))) {
 		let template = document.createElement('div');
 		template.classList.add('vabs_update_notification');
@@ -35,11 +33,10 @@ fetch(`https://api.github.com/repos/uwehornnet/wpvabs/releases`, {
 		`;
 
 		template.querySelector('button').addEventListener('click', function() {
-			updatePlugin()
+			updatePlugin(response[0].tag_name)
 		});
 
 		document.querySelector('body').append(template);
-
 	}
 })
 
@@ -121,18 +118,27 @@ $('.from__field--radio--lang').each(function () {
 	});
 });
 
-function updatePlugin() {
+function updatePlugin(version) {
 	document.querySelector('.vabs_update_notification button').innerHTML = 'loading ...';
 
 	fetch(`${url}?method=update`, {
 		method: 'POST',
 		headers: {
 			"Content-Type": "application/json",
-		}
+		},
+		body: JSON.stringify({version: version})
 	}).then((response) => {
 		return response.json();
 	}).then((response) => {
-		console.log(response.status);
+		if(response.status) {
+			document.querySelector('.vabs_update_notification').innerHTML = `
+				<p>${response.status}</p>
+			`;
+
+			setTimeout(function () {
+				document.querySelector('.vabs_update_notification').remove();
+			}, 3000);
+		}
 
 	});
 }
