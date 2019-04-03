@@ -71,7 +71,8 @@ function update() {
 			'/assets/js/vabs_admin.js',
 			'/assets/js/vabs_form.js',
 			'/assets/css/vabs_admin.css',
-			'/assets/css/vabs_form.css'
+			'/assets/css/vabs_form.css',
+			'version.php'
 	];
 
 	$version_root_path = $folder . '/wpvabs-' . $version;
