@@ -1,4 +1,4 @@
 <?php
 $info = [
-	'version' => 2.1
+	'version' => 2.2
 ];
