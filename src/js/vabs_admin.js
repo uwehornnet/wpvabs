@@ -1,4 +1,4 @@
-const version = '1';
+const version = '2.1';
 
 const $ = require('jquery');
 const url = vabs_ajax_obj.url + 'handler.php';
