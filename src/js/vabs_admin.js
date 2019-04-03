@@ -1,5 +1,3 @@
-const version = '2.1';
-
 const $ = require('jquery');
 const url = vabs_ajax_obj.url + 'handler.php';
 
@@ -14,37 +12,46 @@ const links = document.querySelectorAll('.navigation__links--link');
 const saveOptions = document.getElementById('save_main_options');
 
 
-fetch(`https://api.github.com/repos/uwehornnet/wpvabs/releases`, {
-	method: 'GET',
-	headers: {
-		"Content-Type": "application/json",
-	},
-}).then((response) => {
+fetch(`${url}?method=version`).then((response) => {
 	return response.json();
 }).then((response) => {
-	if(version < parseFloat(response[0].tag_name.replace('v', ''))) {
-		let template = document.createElement('div');
+	const version = response.version;
 
-		let versions = '';
-		response.forEach((v) => {
-			versions += `<button data-target="${v.tag_name}">${ v.tag_name }</button>`;
-		});
-		template.classList.add('vabs_update_notification');
-		template.innerHTML = `
+	fetch(`https://api.github.com/repos/uwehornnet/wpvabs/releases`, {
+		method: 'GET',
+		headers: {
+			"Content-Type": "application/json",
+		},
+	}).then((response) => {
+		return response.json();
+	}).then((response) => {
+		if(version < parseFloat(response[0].tag_name.replace('v', ''))) {
+			let template = document.createElement('div');
+
+			let versions = '';
+			response.forEach((v) => {
+				versions += `<button data-target="${v.tag_name}">${ v.tag_name }</button>`;
+			});
+			template.classList.add('vabs_update_notification');
+			template.innerHTML = `
 			<strong>Updates available.</strong>
 			<p>Your are running on ${version}, to stay up to date with the vabs api connection, we recommend you to update the latest version.</p>
 			${versions}
 		`;
 
-		template.querySelectorAll('button').forEach((button) => {
-			button.addEventListener('click', function(e) {
-				updatePlugin(e.target.dataset.target.replace('v', ''))
+			template.querySelectorAll('button').forEach((button) => {
+				button.addEventListener('click', function(e) {
+					updatePlugin(e.target.dataset.target.replace('v', ''))
+				});
 			});
-		});
 
-		document.querySelector('body').append(template);
-	}
-})
+			document.querySelector('body').append(template);
+		}
+	})
+});
+
+
+
 
 
 if (saveOptions) {

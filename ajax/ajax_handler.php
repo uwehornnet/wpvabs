@@ -1,8 +1,10 @@
 <?php
 
 include_once realpath(dirname(__FILE__)).'/../config.php';
+include_once realpath(dirname(__FILE__)).'/../version.php';
 
 $allowed = [
+	'version',
 	'update',
 	'get_referrer_id',
 	'get_client_data',
@@ -35,8 +37,14 @@ define('TOKEN', $config['api_token']);
 define('CLIENT_ID', $config['client_id']);
 define('URL', $config['url']);
 define('REFERRER', $config['referrer']);
+define('VERSION', json_encode($info));
 
 call_user_func($_GET['method']);
+
+function version() {
+	echo VERSION;
+	return;
+}
 
 function update() {
 
