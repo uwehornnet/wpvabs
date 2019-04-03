@@ -266,6 +266,9 @@ export default class VabsWrapper {
 			 */
 
 			let group = this.fetchData('get_courses_of_group', {id: el.dataset.query});
+
+
+
 			group.then((items) => {
 				items.forEach((item) => {
 					this.listItem(wrapper, element, item);
@@ -279,14 +282,27 @@ export default class VabsWrapper {
 			 * @type {*|Array}
 			 */
 			const ids = el.dataset.query.split(',');
-			ids.forEach((id) => {
-				let item = this.fetchData('get_single_course', {id: id});
 
-				item.then((response) => {
-					this.listItem(wrapper, element, response[0]);
-					wrapper.addCourse(response[0]);
-				});
+			let courses = this.asyncFetchMultipleCoursesById(ids);
+
+			// ids.forEach((id) => {
+			// 	let item = this.fetchData('get_single_course', {id: id});
+			//
+			// 	item.then((response) => {
+			// 		this.listItem(wrapper, element, response[0]);
+			// 		wrapper.addCourse(response[0]);
+			// 		console.log(response[0])
+			// 	});
+			// });
+
+			courses.then((response) => {
+				for(var i = 0; i < response.length; i++) {
+					const course = response[i];
+					this.listItem(wrapper, element, course);
+					wrapper.addCourse(course);
+				}
 			});
+
 		}
 
 	}
@@ -373,6 +389,8 @@ export default class VabsWrapper {
 		html += '<div class="element__body"><div class="form">';
 		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_firstname'] ? this.lang[lang]['form_label_firstname'] : 'Vorname' }</label><input type="text" name="firstname" autocomplete="off"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_lastname'] ? this.lang[lang]['form_label_lastname'] : 'Vorname' }</label><input type="text" name="lastname" autocomplete="off"></div></div>`;
 		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_mobile'] ? this.lang[lang]['form_label_mobile'] : 'Telefonnummer' }</label><input type="text" name="mobile" autocomplete="off"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_email'] ? this.lang[lang]['form_label_email'] : 'Emailadresse' }</label><input type="text" name="email" autocomplete="off"></div></div>`;
+		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">Strasse</label><input type="text" name="street" autocomplete="off"></div><div class="form__field"><label style="display: block;">Hausnummer</label><input type="text" name="number" autocomplete="off"></div></div>`;
+		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">Postleitzahl</label><input type="text" name="zip_code" autocomplete="off"></div><div class="form__field"><label style="display: block;">Ort</label><input type="text" name="city" autocomplete="off"></div></div>`;
 		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_datefrom'] ? this.lang[lang]['form_label_datefrom'] : 'Tag der Anreise' }</label><input type="text" name="anreise" class="vabsTravleDetails vabsTravleDetailsArrival"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_dateto'] ? this.lang[lang]['form_label_dateto'] : 'Tag der Abreise' }</label><input type="text" name="abreise" class="vabsTravleDetails vabsTravleDetailsDeparture"></div></div>`;
 		html += `<div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_interest'] ? this.lang[lang]['form_label_interest'] : 'Interesse' }</label><select name="interest"><option disbaled selected>${ this.lang[lang]['form_label_intereset_inner'] ? this.lang[lang]['form_label_intereset_inner'] : 'Interesse wählen' }</option></select></div>`;
 		html += `<div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_note'] ? this.lang[lang]['form_label_note'] : 'Bemerkung' }</label><textarea name="note" rows="10"></textarea></div>`;
@@ -448,5 +466,28 @@ export default class VabsWrapper {
 		}).then((response) => {
 			return response.json();
 		});
+	}
+
+	async asyncFetchMultipleCoursesById(ids) {
+		const method = 'get_single_course';
+		let array = [];
+		for(var i = 0; i < ids.length; i++) {
+			const id = ids[i];
+			let response = await fetch(this.url + '?method=' + method, {
+				method: 'POST',
+				body: JSON.stringify({id: id})
+			});
+			let data = await response.json();
+			array.push(data[0]);
+		}
+
+		let sorted = array.slice(0).sort(function(a, b) {
+			var x = a.kurs_gruppen_name.toLowerCase();
+			var y = b.kurs_gruppen_name.toLowerCase();
+			return x < y ? -1 : x > y ? 1 : 0;
+		});
+
+		return sorted;
+
 	}
 }

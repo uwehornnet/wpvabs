@@ -209,6 +209,7 @@ function get_course_details()
 	}
 }
 
+
 function get_single_course()
 {
 
@@ -325,6 +326,10 @@ function create_new_contact()
 		'lastname' => $_POST['lastname'],
 		'email' => $_POST['email'],
 		'mobile' => $_POST['mobile'],
+		'street' => $_POST['street'],
+		'number' => $_POST['number'],
+		'zip_code' => $_POST['zip_code'],
+		'city' => $_POST['city'],
 		'dateFrom' => isset($_POST['anreise']) ? $_POST['anreise'] : null,
 		'dateTo' => isset($_POST['abreise']) ? $_POST['abreise'] : null,
 		'send_email_request' => 'yes',

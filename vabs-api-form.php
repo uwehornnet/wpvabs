@@ -3,7 +3,7 @@
 /**
  * Plugin Name: API Connection to VABS
  * Description: Plugin to allow user to directly use the VABS API from a frontend form
- * Version: 2
+ * Version: 1.5
  * Author: Uwe Horn
  * Author URI http://uwe-horn.net
  * License: GPLv2 or later

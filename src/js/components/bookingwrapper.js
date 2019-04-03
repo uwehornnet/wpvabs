@@ -5,6 +5,10 @@ export default class BookingWrapper{
 		this.user = {
 			firstname: '',
 			lastname: '',
+			street: '',
+			number: '',
+			zip_code: '',
+			city: '',
 			email: '',
 			mobile: '',
 			note: '',
