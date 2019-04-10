@@ -266,10 +266,9 @@ export default class VabsWrapper {
 			 */
 
 			let group = this.fetchData('get_courses_of_group', {id: el.dataset.query});
-
-
-
+			console.log(group)
 			group.then((items) => {
+
 				items.forEach((item) => {
 					this.listItem(wrapper, element, item);
 					wrapper.addCourse(item);
