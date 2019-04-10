@@ -281,27 +281,22 @@ export default class VabsWrapper {
 			 * get elements from given ids
 			 * @type {*|Array}
 			 */
-			const ids = el.dataset.query.split(',');
 
-			let courses = this.asyncFetchMultipleCoursesById(ids);
-
-			// ids.forEach((id) => {
-			// 	let item = this.fetchData('get_single_course', {id: id});
-			//
-			// 	item.then((response) => {
-			// 		this.listItem(wrapper, element, response[0]);
-			// 		wrapper.addCourse(response[0]);
-			// 		console.log(response[0])
-			// 	});
-			// });
+			let courses = this.fetchData('get_courses', {ids: el.dataset.query});
 
 			courses.then((response) => {
+				return response.slice(0).sort(function(a, b) {
+					var x = a.kurs_gruppen_name.toLowerCase();
+					var y = b.kurs_gruppen_name.toLowerCase();
+					return x < y ? -1 : x > y ? 1 : 0;
+				});
+			}).then((response) => {
 				for(var i = 0; i < response.length; i++) {
 					const course = response[i];
 					this.listItem(wrapper, element, course);
 					wrapper.addCourse(course);
 				}
-			});
+			})
 
 		}
 
@@ -387,10 +382,10 @@ export default class VabsWrapper {
 		let html = '<div class="element">';
 		html += `<div class="element__header"><span class="element__header--index"></span>${ this.lang[lang]['title_persdata'] ? this.lang[lang]['title_persdata'] : 'Fülle deine persönlichen Daten aus' }</div>`;
 		html += '<div class="element__body"><div class="form">';
-		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_firstname'] ? this.lang[lang]['form_label_firstname'] : 'Vorname' }</label><input type="text" name="firstname" autocomplete="off"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_lastname'] ? this.lang[lang]['form_label_lastname'] : 'Vorname' }</label><input type="text" name="lastname" autocomplete="off"></div></div>`;
-		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_mobile'] ? this.lang[lang]['form_label_mobile'] : 'Telefonnummer' }</label><input type="text" name="mobile" autocomplete="off"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_email'] ? this.lang[lang]['form_label_email'] : 'Emailadresse' }</label><input type="text" name="email" autocomplete="off"></div></div>`;
-		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">Strasse</label><input type="text" name="street" autocomplete="off"></div><div class="form__field"><label style="display: block;">Hausnummer</label><input type="text" name="number" autocomplete="off"></div></div>`;
-		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">Postleitzahl</label><input type="text" name="zip_code" autocomplete="off"></div><div class="form__field"><label style="display: block;">Ort</label><input type="text" name="city" autocomplete="off"></div></div>`;
+		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_firstname'] ? this.lang[lang]['form_label_firstname'] : 'Vorname' }</label><input type="text" name="firstname" autocomplete="off" placeholder="Max"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_lastname'] ? this.lang[lang]['form_label_lastname'] : 'Vorname' }</label><input type="text" name="lastname" autocomplete="off" placeholder="Müller"></div></div>`;
+		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_mobile'] ? this.lang[lang]['form_label_mobile'] : 'Telefonnummer' }</label><input type="text" name="mobile" autocomplete="off" placeholder="+4912345678910"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_email'] ? this.lang[lang]['form_label_email'] : 'Emailadresse' }</label><input type="text" name="email" autocomplete="off" placeholder="mail@domain.com"></div></div>`;
+		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">Strasse*</label><input type="text" name="street" autocomplete="off" placeholder="Strassenname"></div><div class="form__field"><label style="display: block;">Hausnummer*</label><input type="text" name="number" autocomplete="off" placeholder="10a"></div></div>`;
+		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">Postleitzahl*</label><input type="text" name="zip_code" autocomplete="off" placeholder="01234"></div><div class="form__field"><label style="display: block;">Ort*</label><input type="text" name="city" autocomplete="off" placeholder="Name der Stadt"></div></div>`;
 		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_datefrom'] ? this.lang[lang]['form_label_datefrom'] : 'Tag der Anreise' }</label><input type="text" name="anreise" class="vabsTravleDetails vabsTravleDetailsArrival"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_dateto'] ? this.lang[lang]['form_label_dateto'] : 'Tag der Abreise' }</label><input type="text" name="abreise" class="vabsTravleDetails vabsTravleDetailsDeparture"></div></div>`;
 		html += `<div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_interest'] ? this.lang[lang]['form_label_interest'] : 'Interesse' }</label><select name="interest"><option disbaled selected>${ this.lang[lang]['form_label_intereset_inner'] ? this.lang[lang]['form_label_intereset_inner'] : 'Interesse wählen' }</option></select></div>`;
 		html += `<div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_note'] ? this.lang[lang]['form_label_note'] : 'Bemerkung' }</label><textarea name="note" rows="10"></textarea></div>`;
@@ -439,7 +434,7 @@ export default class VabsWrapper {
 		html += `<div class="element__header"><span class="element__header--index"></span>${ this.lang[lang]['title_confirmation'] ? this.lang[lang]['title_confirmation'] : 'Bitte überprüfe deine Daten auf Richtigkeit' }</div>`;
 		html += '<div class="element__body">';
 		html += '<div class="confirmation">';
-		html += '<div class="confirmation__user"><p><span>Persönliche Daten</span><span class="link" data-target="user">Daten ändern</span></p><span class="name"></span><span class="mobile"></span><span class="email"></span><span class="note"></span></div>';
+		html += '<div class="confirmation__user"><p><span>Persönliche Daten</span><span class="link" data-target="user">Daten ändern</span></p><span class="name"></span><span class="anschrift"></span><span class="mobile"></span><span class="email"></span><span class="note"></span></div>';
 		html += '<div class="confirmation__travel"><p><span>Reisedaten</span><span class="link" data-target="user">Daten ändern</span></p><span class="arrival"></span> - <span class="departure"></span></div>';
 		html += '<div class="confirmation__course"><p><span>Kursdaten</span><span class="link" data-target="course">Daten ändern</span></p></div>';
 		html += '<div class="confirmation__payment"><p>Gesamtbetrag</p><span class="totalprice"></span></div>';

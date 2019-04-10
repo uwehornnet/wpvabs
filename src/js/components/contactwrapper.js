@@ -8,6 +8,10 @@ export default class ContactWrapper{
 			email: '',
 			mobile: '',
 			note: '',
+			street: '',
+			number: '',
+			zip_code: '',
+			city: '',
 			anreise: '',
 			abreise: '',
 			interest: '',
@@ -61,6 +65,22 @@ export default class ContactWrapper{
 			return false;
 		}
 
+		if(!this.user.street){
+			return false;
+		}
+
+		if(!this.user.number){
+			return false;
+		}
+
+		if(!this.user.zip_code){
+			return false;
+		}
+
+		if(!this.user.city){
+			return false;
+		}
+
 		if(!this.user.note){
 			return false;
 		}
@@ -97,6 +117,10 @@ export default class ContactWrapper{
 					lastname: this.user.lastname,
 					mobile: this.user.mobile,
 					email: this.user.email,
+					street: this.user.street,
+					number: this.user.number,
+					zip_code: this.user.zip_code,
+					city: this.user.city,
 					note: this.user.note,
 					anreise: this.user.anreise,
 					abreise: this.user.abreise,
@@ -125,6 +149,10 @@ export default class ContactWrapper{
 				lastname: '',
 				email: '',
 				mobile: '',
+				street: '',
+				number: '',
+				zip_code: '',
+				city: '',
 				note: '',
 				anreise: '',
 				abreise: '',

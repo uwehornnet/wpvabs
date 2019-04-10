@@ -122,6 +122,22 @@ export default class BookingWrapper{
 			return false;
 		}
 
+		if(!this.user.street){
+			return false;
+		}
+
+		if(!this.user.number){
+			return false;
+		}
+
+		if(!this.user.zip_code){
+			return false;
+		}
+
+		if(!this.user.city){
+			return false;
+		}
+
 		if(!this.user.anreise){
 			return false;
 		}
@@ -197,6 +213,7 @@ export default class BookingWrapper{
 		form.querySelector('.confirmation__user .name').innerHTML = this.user.firstname + ' ' + this.user.lastname;
 		form.querySelector('.confirmation__user .mobile').innerHTML = this.user.mobile;
 		form.querySelector('.confirmation__user .email').innerHTML = this.user.email;
+		form.querySelector('.confirmation__user .anschrift').innerHTML = `${this.user.street} ${this.user.number}</br>${this.user.zip_code} ${this.user.city}`;
 		form.querySelector('.confirmation__user .note').innerHTML = this.user.note;
 		form.querySelector('.confirmation__travel .arrival').innerHTML = this.humanReadableDate(new Date(this.user.anreise));
 		form.querySelector('.confirmation__travel .departure').innerHTML = this.humanReadableDate(new Date(this.user.abreise));
@@ -260,6 +277,10 @@ export default class BookingWrapper{
 					lastname: this.user.lastname,
 					mobile: this.user.mobile,
 					email: this.user.email,
+					street: this.user.street,
+					number: this.user.number,
+					zip_code: this.user.zip_code,
+					city: this.user.city,
 					note: this.user.note,
 					anreise: this.user.anreise,
 					abreise: this.user.abreise,
@@ -345,6 +366,10 @@ export default class BookingWrapper{
 				email: '',
 				mobile: '',
 				note: '',
+				street: '',
+				number: '',
+				zip_code: '',
+				city: '',
 				anreise: '',
 				abreise: '',
 				interest: '',

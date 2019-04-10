@@ -11,6 +11,7 @@ $allowed = [
 	'get_client_interest',
 	'get_single_course',
 	'get_all_courses',
+	'get_courses',
 	'get_all_course_groups',
 	'get_courses_of_group',
 	'create_new_contact',
@@ -102,7 +103,6 @@ function rrmdir($dir) {
 		rmdir($dir);
 	}
 }
-
 
 function get_referrer_id()
 {
@@ -218,6 +218,31 @@ function get_course_details()
 	}
 }
 
+function get_courses() {
+
+	$token = 'Token: ' . TOKEN;
+
+	$url = URL;
+	$requestUrl = '/V2/courses/' . $_POST['ids'];
+	$header = array($token);
+	$curl = curl_init($url.$requestUrl);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_HTTPGET, 1);
+	curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+
+	$response = curl_exec($curl);
+	$err = curl_error($curl);
+
+	curl_close($curl);
+
+	if ($err) {
+		echo "cURL Error #:" . $err;
+	} else {
+		echo $response;
+
+	}
+
+}
 
 function get_single_course()
 {
