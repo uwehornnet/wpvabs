@@ -11,7 +11,6 @@ class Dependencies
 
 		add_action( 'admin_enqueue_scripts', array($this, 'enqueue_admin') );
 		add_action( 'wp_enqueue_scripts', array($this, 'enqueue') );
-
 	}
 
 
