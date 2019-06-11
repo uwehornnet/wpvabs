@@ -1,4 +1,5 @@
-import BookingWrapper from './bookingwrapper.js';
+// import BookingWrapper from './bookingwrapper.js';
+import BookingForm from './BookingForm.js';
 import ContactWrapper from './contactwrapper.js';
 
 const flatpickr = require("flatpickr");
@@ -12,11 +13,16 @@ export default class VabsWrapper {
 		this.init(elements);
 	}
 
+	/**
+	 *
+	 * @param selectors
+	 */
 	init(selectors) {
 		selectors.forEach((elem, index) => {
 			if (elem.dataset.form === 'booking') {
-				this.forms[index] = new BookingWrapper(this.url, this.lang[elem.dataset.lang]);
-				this.createBookingForm(elem, this.forms[index], elem.dataset.lang);
+				this.forms[index] = new BookingForm(this.url, elem, this.lang[elem.dataset.lang]);
+				this.forms[index].init(elem)
+				// this.createBookingForm(elem, this.forms[index], elem.dataset.lang);
 			}
 
 			if (elem.dataset.form === 'contact') {
@@ -27,6 +33,12 @@ export default class VabsWrapper {
 
 	}
 
+	/**
+	 *
+	 * @param elem
+	 * @param wrapper
+	 * @param lang
+	 */
 	createContactForm(elem, wrapper, lang) {
 
 		/**
@@ -57,7 +69,14 @@ export default class VabsWrapper {
 		elem.querySelector('button .loading').style.display = 'none';
 	}
 
+	/**
+	 *
+	 * @param elem
+	 * @param wrapper
+	 * @param lang
+	 */
 	createBookingForm(elem, wrapper, lang) {
+
 
 		/**
 		 * create formwrapper
@@ -77,6 +96,16 @@ export default class VabsWrapper {
 		this.appendListItems(formList.querySelector('.element__body'), elem, wrapper);
 
 		/**
+		 * append participants
+		 */
+		formwrapper.querySelector('.vabsform__body').append(this.participantsform());
+
+		/**
+		 * append participants
+		 */
+		formwrapper.querySelector('.vabsform__body').append(this.trainingsform(wrapper));
+
+		/**
 		 * create user form
 		 */
 		formwrapper.querySelector('.vabsform__body').append(this.userform(wrapper, lang));
@@ -90,6 +119,7 @@ export default class VabsWrapper {
 		 * append Interests to select field
 		 */
 		this.appendInterest(formwrapper);
+
 
 		/**
 		 * create confirmation part
@@ -137,11 +167,16 @@ export default class VabsWrapper {
 		form.className = 'vabsform';
 		form.autocomplete = 'off';
 		let html = '<div class="vabsform__body"></div>';
-		html += `<div class="vabsform__footer"><button class="vabsformsubmit"><span class="text">${ string }</span><span class="loading"></span></button></div>`;
+		html += `<div class="vabsform__footer"><button class="vabsformback">zurück</button><button class="vabsformsubmit"><span class="text">${ string }</span><span class="loading"></span></button></div>`;
 		form.innerHTML = html;
 
 		form.addEventListener('reset', () => {
 			wrapper.reset(form);
+		});
+
+		form.querySelector('button.vabsformback').addEventListener('click', (e) => {
+			e.preventDefault();
+			wrapper.stepBack(e, form);
 		});
 
 		form.querySelector('button.vabsformsubmit').addEventListener('click', (e) => {
@@ -155,7 +190,7 @@ export default class VabsWrapper {
 	flatPickr(elem) {
 		const anreiseElem = elem.querySelector('input[name="anreise"]');
 		const abreiseElem = elem.querySelector('input[name="abreise"]');
-		if(window.innerWidth > 767) {
+		if(window.innerWidth > 1024) {
 			flatpickr(anreiseElem, {
 				locale: {
 					firstDayOfWeek: 1,
@@ -266,7 +301,6 @@ export default class VabsWrapper {
 			 */
 
 			let group = this.fetchData('get_courses_of_group', {id: el.dataset.query});
-			console.log(group)
 			group.then((items) => {
 
 				items.forEach((item) => {
@@ -343,22 +377,41 @@ export default class VabsWrapper {
 			const div = document.createElement('div');
 			div.className = 'course';
 			let html = '';
-			if (item.unit_shortcode === 'h') {
-				html += '<span class="course__desc"><label style="display: block;"><input type="checkbox" name="course" value="' + item.id + '"> ' + item.name + '</label>' + item.kurz_beschreibung.replace('<br />', '') + '</span><span class="course__qty">' + item.anzTage + ' Tag(e) á <input type="number" name="courseqty" data-course="' + item.id + '" min="' + parseInt(item.minBookableAmount) + '" value="' + item.minBookableAmount + '"> Stunde(n)</span><span class="course__price">' + parseFloat(data.price).toFixed(2) + ' €</span>';
-			} else if (item.unit_shortcode === 'd') {
-				html += '<span class="course__desc"><label style="display: block;"><input type="checkbox" name="course" value="' + item.id + '"> ' + item.name + '</label>' + item.kurz_beschreibung.replace('<br />', '') + '</span><span class="course__qty"><input type="number" name="courseqty" data-course="' + item.id + '" min="' + parseInt(item.minBookableAmount) + '" value="' + item.minBookableAmount + '">Tag(e) á ' + item.anzStunden + ' Stunde(n)</span><span class="course__price">' + parseFloat(data.price).toFixed(2) + ' €</span>';
-			} else if (item.unit_shortcode === 'w') {
-				html += '<span class="course__desc"><label style="display: block;"><input type="checkbox" name="course" value="' + item.id + '"> ' + item.name + '</label>' + item.kurz_beschreibung.replace('<br />', '') + '</span><span class="course__qty"><input type="number" name="courseqty" data-course="' + item.id + '" min="' + parseInt(item.minBookableAmount) + '" value="' + item.minBookableAmount + '">Woche(n)</span><span class="course__price">' + parseFloat(data.price).toFixed(2) + ' €</span>';
+
+			if(item.tiered_pricing && item.tiered_pricing == '1'){
+				if (item.unit_shortcode === 'h') {
+					html += '<span class="course__desc"><label style="display: block;"><input type="checkbox" name="course" value="' + item.id + '"> ' + item.name + '</label>' + item.kurz_beschreibung.replace('<br />', '') + '</span><span class="course__qty">' + item.anzTage + ' Tag(e) á <input type="number" name="courseqty" data-course="' + item.id + '" min="' + parseInt(item.minBookableAmount) + '" value="' + item.minBookableAmount + '"> Stunde(n)</span><span class="course__amount"><label>Anzahl</label><input type="number" name="course__amount" value="1" min="1" data-course="' + item.id + '"></span><span class="course__price">' + parseFloat(data.price).toFixed(2) + ' €</span>';
+				} else if (item.unit_shortcode === 'd') {
+					html += '<span class="course__desc"><label style="display: block;"><input type="checkbox" name="course" value="' + item.id + '"> ' + item.name + '</label>' + item.kurz_beschreibung.replace('<br />', '') + '</span><span class="course__qty"><input type="number" name="courseqty" data-course="' + item.id + '" min="' + parseInt(item.minBookableAmount) + '" value="' + item.minBookableAmount + '">Tag(e) á ' + item.anzStunden + ' Stunde(n)</span><span class="course__amount"><label>Anzahl</label><input type="number" name="course__amount" value="1" min="1" data-course="' + item.id + '"></span><span class="course__price">' + parseFloat(data.price).toFixed(2) + ' €</span>';
+				} else if (item.unit_shortcode === 'w') {
+					html += '<span class="course__desc"><label style="display: block;"><input type="checkbox" name="course" value="' + item.id + '"> ' + item.name + '</label>' + item.kurz_beschreibung.replace('<br />', '') + '</span><span class="course__qty"><input type="number" name="courseqty" data-course="' + item.id + '" min="' + parseInt(item.minBookableAmount) + '" value="' + item.minBookableAmount + '">Woche(n)</span><span class="course__amount"><label>Anzahl</label><input type="number" name="course__amount" value="1" min="1" data-course="' + item.id + '"></span><span class="course__price">' + parseFloat(data.price).toFixed(2) + ' €</span>';
+				}
+			}else{
+				if (item.unit_shortcode === 'h') {
+					html += '<span class="course__desc"><label style="display: block;"><input type="checkbox" name="course" value="' + item.id + '"> ' + item.name + '</label>' + item.kurz_beschreibung.replace('<br />', '') + '</span><span class="course__qty">' + item.anzTage + ' Tag(e) á ' + item.anzStunden + ' Stunde(n)</span><span class="course__amount"><label>Anzahl</label><input type="number" name="course__amount" value="1" min="1" data-course="' + item.id + '"></span><span class="course__price">' + parseFloat(data.price).toFixed(2) + ' €</span>';
+				} else if (item.unit_shortcode === 'd') {
+					html += '<span class="course__desc"><label style="display: block;"><input type="checkbox" name="course" value="' + item.id + '"> ' + item.name + '</label>' + item.kurz_beschreibung.replace('<br />', '') + '</span><span class="course__qty">' + item.anzTage + ' Tag(e) á ' + item.anzStunden + ' Stunde(n)</span><span class="course__amount"><label>Anzahl</label><input type="number" name="course__amount" value="1" min="1" data-course="' + item.id + '"></span><span class="course__price">' + parseFloat(data.price).toFixed(2) + ' €</span>';
+				} else if (item.unit_shortcode === 'w') {
+					html += '<span class="course__desc"><label style="display: block;"><input type="checkbox" name="course" value="' + item.id + '"> ' + item.name + '</label>' + item.kurz_beschreibung.replace('<br />', '') + '</span><span class="course__qty">' + item.anzTage + ' Tag(e) á ' + item.minBookableAmount + ' Woche(n)</span><span class="course__amount"><label>Anzahl</label><input type="number" name="course__amount" value="1" min="1" data-course="' + item.id + '"></span><span class="course__price">' + parseFloat(data.price).toFixed(2) + ' €</span>';
+				}
 			}
+
 			div.innerHTML = html;
 
 			div.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
 				wrapper.updateCourseList(e)
 			});
 
-			div.querySelector('input[name="courseqty"]').addEventListener('change', (e) => {
-				wrapper.updateCourseQty(e)
+			div.querySelector('input[name="course__amount"]').addEventListener('change', (e) => {
+				wrapper.updateCourseAmount(e)
 			});
+
+			if(item.tiered_pricing && item.tiered_pricing == '1') {
+				div.querySelector('input[name="courseqty"]').addEventListener('change', (e) => {
+					wrapper.updateCourseQty(e)
+				});
+			}
+
 
 			elem.append(div)
 		}).then(() => {
@@ -379,12 +432,13 @@ export default class VabsWrapper {
 		div.classList.add('user');
 
 		let html = '<div class="element">';
-		html += `<div class="element__header"><span class="element__header--index"></span>${ this.lang[lang]['title_persdata'] ? this.lang[lang]['title_persdata'] : 'Fülle deine persönlichen Daten aus' }</div>`;
+		// html += `<div class="element__header"><span class="element__header--index"></span>${ this.lang[lang]['title_persdata'] ? this.lang[lang]['title_persdata'] : 'Fülle deine persönlichen Daten aus' }</div>`;
+		html += `<div class="element__header"><span class="element__header--index"></span>Rechnungsanschrift</div>`;
 		html += '<div class="element__body"><div class="form">';
-		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_firstname'] ? this.lang[lang]['form_label_firstname'] : 'Vorname' }</label><input type="text" name="firstname" autocomplete="off" placeholder="Max"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_lastname'] ? this.lang[lang]['form_label_lastname'] : 'Vorname' }</label><input type="text" name="lastname" autocomplete="off" placeholder="Müller"></div></div>`;
-		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_mobile'] ? this.lang[lang]['form_label_mobile'] : 'Telefonnummer' }</label><input type="text" name="mobile" autocomplete="off" placeholder="+4912345678910"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_email'] ? this.lang[lang]['form_label_email'] : 'Emailadresse' }</label><input type="text" name="email" autocomplete="off" placeholder="mail@domain.com"></div></div>`;
-		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">Strasse*</label><input type="text" name="street" autocomplete="off" placeholder="Strassenname"></div><div class="form__field"><label style="display: block;">Hausnummer*</label><input type="text" name="number" autocomplete="off" placeholder="10a"></div></div>`;
-		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">Postleitzahl*</label><input type="text" name="zip_code" autocomplete="off" placeholder="01234"></div><div class="form__field"><label style="display: block;">Ort*</label><input type="text" name="city" autocomplete="off" placeholder="Name der Stadt"></div></div>`;
+		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_firstname'] ? this.lang[lang]['form_label_firstname'] : 'Vorname' }</label><input type="text" name="firstname" autocomplete="off" placeholder="Max" required></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_lastname'] ? this.lang[lang]['form_label_lastname'] : 'Vorname' }</label><input type="text" name="lastname" autocomplete="off" placeholder="Müller" required></div></div>`;
+		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_mobile'] ? this.lang[lang]['form_label_mobile'] : 'Telefonnummer' }</label><input type="text" name="mobile" autocomplete="off" placeholder="+4912345678910"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_email'] ? this.lang[lang]['form_label_email'] : 'Emailadresse' }</label><input type="text" name="email" autocomplete="off" placeholder="mail@domain.com" required></div></div>`;
+		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">Strasse*</label><input type="text" name="street" autocomplete="off" placeholder="Strassenname" required></div><div class="form__field"><label style="display: block;">Hausnummer*</label><input type="text" name="number" autocomplete="off" placeholder="10a" required></div></div>`;
+		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">Postleitzahl*</label><input type="text" name="zip_code" autocomplete="off" placeholder="01234" required></div><div class="form__field"><label style="display: block;">Ort*</label><input type="text" name="city" autocomplete="off" placeholder="Name der Stadt" required></div></div>`;
 		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_datefrom'] ? this.lang[lang]['form_label_datefrom'] : 'Tag der Anreise' }</label><input type="text" name="anreise" class="vabsTravleDetails vabsTravleDetailsArrival"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_dateto'] ? this.lang[lang]['form_label_dateto'] : 'Tag der Abreise' }</label><input type="text" name="abreise" class="vabsTravleDetails vabsTravleDetailsDeparture"></div></div>`;
 		html += `<div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_interest'] ? this.lang[lang]['form_label_interest'] : 'Interesse' }</label><select name="interest"><option disbaled selected>${ this.lang[lang]['form_label_intereset_inner'] ? this.lang[lang]['form_label_intereset_inner'] : 'Interesse wählen' }</option></select></div>`;
 		html += `<div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_note'] ? this.lang[lang]['form_label_note'] : 'Bemerkung' }</label><textarea name="note" rows="10"></textarea></div>`;
@@ -419,7 +473,41 @@ export default class VabsWrapper {
 		return div;
 	}
 
+	/**
+	 *
+	 */
+	participantsform() {
+		const wrapper = document.createElement('div');
+		wrapper.classList.add('vabsform__body--element');
+		wrapper.classList.add('participants');
 
+		let html = '<div class="element">';
+		html += '<div class="element__header"><span class="element__header--index"></span>Teilnehmer</div>';
+		html += '<div class="element__body"></div>';
+		html += '</div>';
+
+		wrapper.innerHTML = html;
+
+		return wrapper;
+	}
+
+	/**
+	 *
+	 */
+	trainingsform(wrapper) {
+		const container = document.createElement('div');
+		container.classList.add('vabsform__body--element');
+		container.classList.add('trainings');
+
+		let html = '<div class="element">';
+		html += '<div class="element__header"><span class="element__header--index"></span>Schulungen</div>';
+		html += '<div class="element__body"></div>';
+		html += '</div>';
+
+		container.innerHTML = html;
+
+		return container;
+	}
 	/**
 	 *
 	 * @returns {Element}
@@ -446,6 +534,8 @@ export default class VabsWrapper {
 
 		return div;
 	}
+
+
 
 	/**
 	 *

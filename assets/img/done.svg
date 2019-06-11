@@ -1,0 +1,20 @@
+<svg viewBox="0 0 818 818">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop-HD" transform="translate(-230.000000, -48.000000)">
+            <g id="done" transform="translate(230.000000, 48.000000)">
+                <circle id="Oval" fill="#F9FAFB" cx="409" cy="409" r="409"></circle>
+                <path d="M74.7872084,341.281246 C66.4122573,344.942426 61,353.215263 61,362.355506 L61,725 C61,737.702549 71.2974508,748 84,748 L766,748 C778.702549,748 789,737.702549 789,725 L789,362.355506 C789,353.215263 783.587743,344.942426 775.212792,341.281246 L434.212792,192.210207 C428.339287,189.642555 421.660713,189.642555 415.787208,192.210207 L74.7872084,341.281246 Z" id="Rectangle" stroke="#3C99CD" stroke-width="4" fill="#EBF1F6"></path>
+                <path d="M133,392.980798 L424.76797,572.982463 L721,391.186547 L721,97 C721,88.7157288 714.284271,82 706,82 L148,82 C139.715729,82 133,88.7157288 133,97 L133,392.980798 Z" id="letter" stroke="#3C99CD" stroke-width="4" fill="#F7F7F7"></path>
+                <path d="M80.1840922,361.186657 L402.972593,559.643749 C416.480188,567.9485 433.513444,567.938157 447.010944,559.617009 L768.879216,361.186657" id="Path" stroke="#3C99CD" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M80.1840922,476.924668 L400.574299,705.498783 C415.185371,715.922675 434.805612,715.910052 449.40326,705.467371 L768.879216,476.924668" id="Path-Copy" stroke="#3C99CD" stroke-width="4" fill="#EBF1F6" stroke-linecap="round" stroke-linejoin="round" transform="translate(424.531654, 599.924668) scale(1, -1) translate(-424.531654, -599.924668) "></path>
+                <g id="text" transform="translate(202.000000, 154.000000)" stroke="#3C99CD" stroke-linecap="round" stroke-linejoin="round" stroke-width="8">
+                    <path d="M0.5,0.5 L278.040973,0.5" id="Line"></path>
+                    <path d="M0.770486414,23 L359,23" id="Line-Copy"></path>
+                    <path d="M1.11475679,46 L359.34427,46" id="Line-Copy-2"></path>
+                </g>
+                <circle id="Oval" stroke="#40D2AC" stroke-width="8" cx="425" cy="385" r="83"></circle>
+                <polyline id="Path-2" stroke="#40D2AC" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" points="373 407.276297 404.645804 429 476 341"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>

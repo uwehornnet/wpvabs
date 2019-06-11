@@ -14,11 +14,13 @@ $allowed = [
 	'get_courses',
 	'get_all_course_groups',
 	'get_courses_of_group',
+	'get_trainings',
 	'create_new_contact',
 	'create_new_lead',
 	'get_course_details',
 	'add_sales_order',
-	'add_sales_line'
+	'add_sales_line',
+	'assign_course_to_training'
 ];
 
 if(!isset($_GET['method'])) {
@@ -141,7 +143,7 @@ function get_client_data()
 	}
 
 	$token = TOKEN != '' ? 'Token: ' . TOKEN : 'Token: ' . $_POST['apiToken'];
-	$url = URL != '' ? URL : $_POST['url'];
+	$url = $_POST['url'] ? $_POST['url'] : URL;
 
 
 	$requestUrl = '/V2/account/data/';
@@ -343,6 +345,30 @@ function get_all_course_groups()
 	}
 }
 
+function get_trainings() {
+
+	$token = 'Token: ' . TOKEN;
+
+	$url = URL;
+	$requestUrl = '/V2/trainings/find/' . $_POST['from'] . '/' . $_POST['to'] . '/' . $_POST['id'];
+	$header = array($token);
+	$curl = curl_init($url.$requestUrl);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_HTTPGET, 1);
+	curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+
+	$response = curl_exec($curl);
+	$err = curl_error($curl);
+
+	curl_close($curl);
+
+	if ($err) {
+		echo "cURL Error #:" . $err;
+	} else {
+		echo $response;
+	}
+}
+
 function create_new_contact()
 {
 
@@ -352,7 +378,7 @@ function create_new_contact()
 	$requestUrl = '/V2/contact/';
 	$header = array($token);
 	$curl = curl_init($url.$requestUrl);
-
+	
 	//As this is a POST Request we need to set the data and method
 	$data = array	(
 		'target_client_hash' =>  CLIENT_ID,
@@ -360,16 +386,16 @@ function create_new_contact()
 		'lastname' => $_POST['lastname'],
 		'email' => $_POST['email'],
 		'mobile' => $_POST['mobile'],
-		'street' => $_POST['street'],
-		'number' => $_POST['number'],
-		'zip_code' => $_POST['zip_code'],
-		'city' => $_POST['city'],
+		'street' => isset($_POST['street']) ? $_POST['street'] : null,
+		'number' => isset($_POST['number']) ? $_POST['number'] : null,
+		'zip_code' => isset($_POST['zip_code']) ? $_POST['zip_code'] : null,
+		'city' => isset($_POST['city']) ? $_POST['city'] : null,
 		'dateFrom' => isset($_POST['anreise']) ? $_POST['anreise'] : null,
 		'dateTo' => isset($_POST['abreise']) ? $_POST['abreise'] : null,
 		'send_email_request' => 'yes',
-		'create_lead' => true,
-		'shorttext' => $_POST['shorttext'],
-		'longtext' => $_POST['note'],
+		'create_lead' => isset($_POST['lead']) ? true : false,
+		'shorttext' => isset($_POST['shorttext']) ? $_POST['shorttext'] : null,
+		'longtext' => isset($_POST['note']) ? $_POST['note'] : null,
 		'referrer_id' => REFERRER
 	);
 
@@ -468,12 +494,43 @@ function add_sales_line()
 	$data = array	(
 			'target_client_hash' => CLIENT_ID,
 			'sales_header_id' => $_POST['sales_header_id'],
+			'line_number' => isset($_POST['line_number']) ? $_POST['line_number'] : null,
 			'object_id' => $_POST['object_id'],
 			'object_code' => 3,
 			'quantity' => 1,
 			'quantity_to_book' => $_POST['quantity'],
 			'date_from' => $_POST['date_from'],
-			'date_to' => $_POST['date_to']
+			'date_to' => $_POST['date_to'],
+			'ship_to_contact' => isset($_POST['ship_to_contact_id']) ? $_POST['ship_to_contact_id'] : null
+	);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+
+	$response = curl_exec($curl);
+	$err = curl_error($curl);
+
+	curl_close($curl);
+
+	if ($err) {
+		echo "cURL Error #:" . $err;
+	} else {
+		echo $response;
+	}
+}
+
+function assign_course_to_training() {
+	$token = 'Token: ' . TOKEN;
+
+	$url = URL;
+	$requestUrl = '/V2/trainings/assignCourseBooking';
+	$header = array($token);
+	$curl = curl_init($url.$requestUrl);
+//As this is a POST Request we need to set the data and method
+	curl_setopt($curl, CURLOPT_POST, true);
+	$data = array	(
+			'course_booking_id' => $_POST['course_booking_id'],
+			'training_id' => $_POST['training_id']
 	);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

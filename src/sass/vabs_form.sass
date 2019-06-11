@@ -14,7 +14,9 @@
 	width: 100%
 	margin: 0px auto
 	text-align: left
+	border: 1px solid whitesmoke
 	&__body
+		position: relative
 		&--element
 			.element
 				&__header
@@ -69,35 +71,75 @@
 					height: auto
 					transition: all ease .4s
 					position: relative
-					&::before
-						content: ''
-						position: absolute
-						left: 24px
-						height: 90%
-						top: 5%
-						width: 3px
-						background: whitesmoke
-					@media(max-width: 767px)
-						&::before
-							display: none
+					.participant
+						&__controls
+							span
+								text-decoration: underline
+								font-size: .8rem
+								cursor: pointer
+						p
+							display: flex
+							justify-content: space-between
+							border-bottom: dashed 1px whitesmoke
+							font-size: .9rem
+							span.remove
+								opacity: .3
+								svg
+									width: auto
+									height: 16px
+						&__form
+							button.button
+								font-size: .9rem
+								appearance: none
+								outline: none
+								box-shadow: none
+								background: darkblue
+								padding: 8px 11px
+								border-radius: 3px
+								font-weight: bold
+								color: white
+								border: 2px solid darkblue
 					.course
-						margin: 14px 0px
-						padding: 14px 28px 14px 63px
-						display: grid
-						grid-template-columns: 40% 40% 20%
-						align-items: center
+						margin: 8px 0px
+						padding: 8px 16px
+						border-bottom: 1px dashed darken(whitesmoke, 30)
+						//display: flex
+						//justify-content: space-between
+						//align-items: flex-end
+
+						//flex-wrap: wrap
+						&:last-of-type
+							border-bottom: none
 						@media(max-width: 767px)
 							display: flex
 							flex-direction: row
 							justify-content: space-between
 							flex-wrap: wrap
-							align-items: flex-start
 							font-size: .9rem
-							padding: 14px
-							align-items: center
+							padding: 0px
+							align-items: flex-end
+						&__header
+							width: 100%
+							padding: 8px 16px
+							.course__name
+								font-weight: bold
+							p
+								margin: 8px 0px 8px 0px
+						&__trainings
+							width: 100%
+							&--training
+								padding: 8px 16px
+								&:nth-of-type(odd)
+									background: whitesmoke
+								label
+									display: flex
+									justify-content: space-between
+									align-items: center
 						&__desc
-							font-size: .9rem
+							font-size: .8rem
 							padding: 7px
+							width: 100%
+							display: block
 							@media(max-width: 767px)
 								width: 100%
 								margin-bottom: 14px
@@ -105,10 +147,27 @@
 								text-transform: uppercase
 								font-size: 1rem
 								font-weight: bold
-						&__qty
+						&__amount
+							display: block
 							padding: 7px
+							width: 33.33%
 							@media(max-width: 767px)
-								width: 70%
+								width: 50%
+							label
+								font-size: .6rem
+							input
+								display: inline-block
+								width: 100%
+								border: none
+								background: whitesmoke
+								padding: 7px
+								margin-right: 7px
+						&__qty
+							display: block
+							padding: 7px
+							width: 33.33%
+							@media(max-width: 767px)
+								width: 100%
 							input
 								display: inline-block
 								width: 40px
@@ -117,29 +176,29 @@
 								padding: 7px
 								margin-right: 7px
 						&__price
+							display: block
 							text-align: right
 							font-weight: bold
 							padding: 7px
+							width: 33.33%
 							@media(max-width: 767px)
-								width: 30%
+								width: 50%
 
 					.form
-						padding: 14px 14px 14px 56px
-						@media(max-width: 767px)
-							padding: 14px
+						padding: 8px
 						&__field
-							padding: .7rem
+							padding: 8px
 							&.horizontal
 								display: grid
 								grid-template-columns: repeat(2, 1fr)
-								grid-column-gap: .7rem
+								grid-column-gap: 8px
 								.form__field
 									padding: 0rem
 								@media(max-width: 767px)
 									display: block
 									.form__field
 										display: block
-										padding: .7rem 0rem
+										padding: 8px 0px
 							label
 								font-weight: normal
 								font-size: .8rem
@@ -150,65 +209,148 @@
 								appearance: none
 								display: block
 								width: 100%
-								padding: 14px
+								padding: 11px 8px
 								border: 1px solid darken(whitesmoke, 20)
-								font-size: 1rem
+								font-size: .9rem
 								background: white
 								border-radius: 0px
 								outline: none
 								box-shadow: none
 							input[type="checkbox"]
 								margin-right: 14px
+						&__button
+							font-size: .9rem
+							appearance: none
+							outline: none
+							box-shadow: none
+							background: darkblue
+							padding: 8px 11px
+							border-radius: 3px
+							font-weight: bold
+							color: white
 
 					.confirmation
-						padding: 1.4rem 2.8rem 1.4rem 6.3rem
-						p
-							margin: 0 0 .7rem 0
-							text-transform: uppercase
-							font-weight: bold
+						padding: 8px
+						&__billing
+							padding: 8px
+							border-bottom: dashed 1px darken(whitesmoke, 30)
+							font-size: .9rem
 							display: flex
 							flex-direction: row
 							justify-content: space-between
-							align-items: center
-							width: 100%
-							max-width: 100%
-							span.link
-								font-weight: normal
-								text-align: right
-								color: darkblue
-								text-decoration: underline
-								font-size: .9rem
-								cursor: pointer
-
-						&__user
-							margin: 1.4rem 0rem
+							@media(max-width: 640px)
+								flex-direction: column
+							&__headline
+								width: 50%
+								@media(max-width: 640px)
+									width: 100%
+							&__meta
+								width: 50%
+								@media(max-width: 640px)
+									width: 100%
+						&__dates
+							padding: 8px
+							font-size: .9rem
+							display: flex
+							flex-direction: row
+							justify-content: space-between
+							border-bottom: dashed 1px darken(whitesmoke, 30)
+							@media(max-width: 640px)
+								flex-direction: column
+							strong
+								width: 50%
+								@media(max-width: 640px)
+									width: 100%
 							span
-								display: block
-							.note
-								margin: 1rem 0rem
-						&__travel
-							margin: 1.4rem 0rem
-						&__course
-							margin: 1.4rem 0rem
-							div
-								margin: .7rem 0rem
-								display: grid
-								grid-template-columns: 40% 40% 20%
-								.courseprice
-									text-align: right
+								width: 50%
+								@media(max-width: 640px)
+									width: 100%
+						&__courses
+							border-bottom: dashed 1px darken(whitesmoke, 30)
+							&__course
+								padding: 8px
+								font-size: .9rem
+								display: flex
+								flex-direction: row
+								justify-content: space-between
+								border-bottom: dashed 1px whitesmoke
+								@media(max-width: 640px)
+									flex-direction: column
+								&--title
+									span
+										display: block
+										font-size: .8rem
+								&--meta
+									width: 50%
+									display: flex
+									flex-direction: row
+									justify-content: space-between
+									@media(max-width: 640px)
+										width: 100%
+										flex-direction: column
 						&__payment
-							border-top: 1px solid whitesmoke
-							padding: .7rem 0rem
-							margin: .7rem 0rem
+							padding: 8px
 							display: flex
 							flex-direction: row
 							justify-content: space-between
-							align-items: center
-							font-weight: bold
-							.totalprice
-								white-space: pre
+							border-bottom: dashed 1px whitesmoke
+							@media(max-width: 640px)
+								flex-direction: column
+			&.participants
+				.form
+					&:nth-of-type(even)
+						background-color: whitesmoke
+					&__field:last-of-type
+						text-align: right
+					&__header
+						padding: 8px
+					&__switcher
+						padding: 0px 8px
+					&__field.horizontal
+						padding: 8px 0px
+					&__participant
+						.participant
+							padding: 8px 0px
+							display: flex
+							flex-direction: row
+							justify-content: space-between
+							&__name
+								width: 33.33%
+							&__tel
+								width: 33.33%
+							&__email
+								width: 33.33%
+		&--success,
+		&--error
+			position: absolute
+			top: 0px
+			left: 0px
+			width: 100%
+			background: white
+			height: 0px
+			overflow: hidden
+			&--wrapper
+				align-self: stretch
+				height: 100%
+				width: 100%
+				text-align: center
+				padding: 1.6rem
+				display: flex
+				align-items: center
+				flex-direction: column
+				justify-content: center
+				svg
+					width: 80%
+					height: auto
+					max-width: 320px
+				p
+					width: 80%
+					height: auto
+					max-width: 400px
+
+
 	&__footer
-		padding: 2.1rem 2.1rem 2.1rem 6.3rem
+		padding: 16px 8px
 		text-align: right
 		button
 			font-size: .9rem
@@ -216,10 +358,11 @@
 			outline: none
 			box-shadow: none
 			background: darkblue
-			padding: .9rem 1.4rem
+			padding: 8px 11px
 			border-radius: 3px
 			font-weight: bold
-
+			color: white
+			border: 2px solid darkblue
 			.text
 				color: white
 			.loading
@@ -236,9 +379,15 @@
 				border-bottom-color: white
 				border-left-color: transparent
 				animation: rotate .6s ease infinite
+			&:hover
+				border: 2px solid transparent
 			&.success
 				background: limegreen
-
+			&.vabsformback
+				color: darkblue
+				background-color: white
+				border: 2px solid darkblue
+				margin-right: 8px
 
 @keyframes note
 	0%
