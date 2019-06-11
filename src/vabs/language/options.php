@@ -1,7 +1,7 @@
 <?php $languages = array (
   'de' => 
   array (
-    'cart_disclaimer_text' => 'Mit dem Absenden dieses Formulares stimmst du unseren <a href="" target="_blank">Datenschutzbestimmungen</a> und <a href="" target="_blank">AGB</a> zu.',
+    'cart_disclaimer_text' => 'Mit dem Absenden dieses Formulares stimmst du unseren <a href="" target="_blank"></a> und  <a href="" target="_blank"></a> zu.',
     'form_label_firstname' => 'Vorname*',
     'form_label_lastname' => 'Nachname*',
     'form_label_email' => 'Email Adresse*',
@@ -15,7 +15,7 @@
     'title_quantity' => 'Wieviel Tage möchtest du buchen?',
     'title_persdata' => 'Persönliche Daten',
     'title_confirmation' => 'Überprüfe deine Daten auf Richtigkeit',
-    'button_next' => 'weiter',
+    'button_next' => 'next step',
     'button_book' => 'kostenpflichtig buchen',
     'button_contact' => 'Formular absenden',
     'button_message_sent' => 'abgesendet',

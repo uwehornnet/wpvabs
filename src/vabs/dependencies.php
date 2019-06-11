@@ -8,19 +8,12 @@ class Dependencies
 	{
 		require_once PLUGINPATH . 'src/vabs/language/options.php';
 		$this->options = $languages;
-	}
 
-
-	public function load()
-	{
-		$this->init();
-	}
-
-	protected function init()
-	{
 		add_action( 'admin_enqueue_scripts', array($this, 'enqueue_admin') );
 		add_action( 'wp_enqueue_scripts', array($this, 'enqueue') );
+
 	}
+
 
 	public function enqueue_admin()
 	{

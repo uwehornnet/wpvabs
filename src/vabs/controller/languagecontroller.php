@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 $route = $_SERVER['HTTP_REFERER'];
 
 include(realpath(dirname(__FILE__)) . '/../language/options.php');

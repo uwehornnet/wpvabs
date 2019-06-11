@@ -12,13 +12,9 @@ class AdminPage
 
 		include(PLUGINPATH . 'src/vabs/language/options.php');
 		$this->languages = $languages;
-	}
 
-	public function create()
-	{
 		add_action( 'admin_menu', array($this, 'add_admin_pages') );
 	}
-
 
 	public function add_admin_pages()
 	{

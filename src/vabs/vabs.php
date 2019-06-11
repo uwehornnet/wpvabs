@@ -4,19 +4,11 @@ class VabsPlugin
 {
 	protected $dependencies;
 	protected $adminpage;
-	protected $bookingshortcode;
 
 	public function __construct()
 	{
 		$this->dependencies = new Dependencies();
 		$this->adminpage = new AdminPage();
-		$this->bookingshortcode = new VabsBooking();
 	}
 
-	public function init()
-	{
-		$this->dependencies->load();
-		$this->adminpage->create();
-		$this->bookingshortcode->create();
-	}
 }
