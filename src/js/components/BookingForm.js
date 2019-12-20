@@ -86,17 +86,43 @@ export default class BookingForm{
 		const wrapper = this.basicAccordionWrapper(name, cl, show);
 		const elem = wrapper.querySelector('.element__body');
 
-		courses.then((items) => {
-			items.forEach((item) => {
-				this.queriedCourses[item.id] = item;
-				this.courseWrapper(elem, item);
-			})
+		courses.then((response) => {
+			return response.slice(0).sort(function(a, b) {
+				const x = a.name.toLowerCase();
+				const y = b.name.toLowerCase();
+				return x < y ? -1 : x > y ? 1 : 0;
+			});
+		}).then((response) => {
+
+			this.appendCourses(elem, response);
 		});
+
+		// courses.then((response) => {
+		// 	for(var i = 0; i < response.length; i++) {
+		// 		const course = response[i];
+		// 		this.queriedCourses[course.id] = course;
+		// 		this.courseWrapper(elem, course);
+		// 	}
+		// 	items.forEach((item) => {
+		// 		this.queriedCourses[item.id] = item;
+		// 		this.courseWrapper(elem, item);
+		// 	})
+		// });
 
 		return wrapper;
 	}
 
-	courseWrapper(elem, course) {
+
+	async appendCourses(elem, response) {
+		for(const key in response) {
+			const course = response[key];
+			this.queriedCourses[course.id] = course;
+			await this.courseWrapper(elem, course);
+		}
+	}
+
+
+	async courseWrapper(elem, course) {
 		const priceObject = this.fetchData('get_course_details', {id: course.id, qty: course.minBookableAmount});
 		priceObject.then((price) => {
 			this.prices[course.id] = price;
@@ -685,6 +711,8 @@ export default class BookingForm{
 
 
 		for(const key in this.selectedCourses) {
+
+
 			let trainings = this.fetchData('get_trainings', {
 				from: this.dates.anreise,
 				to: this.dates.abreise,
@@ -694,10 +722,12 @@ export default class BookingForm{
 			trainings.then((response) => {
 
  				if(this.selectedCourses[key].amount){
-					for(var i = 0; i < this.selectedCourses[key].amount; i++){
+
+					for(let i = 0; i < this.selectedCourses[key].amount; i++){
 						this.CourseTrainingParticipantWrapper(wrapper, response, this.selectedCourses[key], i + 1);
 					}
 				}else{
+
 					this.CourseTrainingParticipantWrapper(wrapper, response, this.selectedCourses[key]);
 				}
 			})
@@ -706,7 +736,6 @@ export default class BookingForm{
 
 	CourseTrainingParticipantWrapper(container, trainings, course, i = 0) {
 
-		container.querySelector('.element__body').innerHTML = '';
 		const wrapper = document.createElement('div');
 		wrapper.classList.add('course');
 
@@ -875,6 +904,7 @@ export default class BookingForm{
 
 	next(e,wrapper) {
 		wrapper.querySelector('.vabsformsubmit').innerHTML = this.loader;
+
 		if(this.current === 'course') {
 			if(Object.keys(this.selectedCourses).length != 0 && this.selectedCourses.constructor === Object){
 				this.current = 'dates';
@@ -921,6 +951,7 @@ export default class BookingForm{
 
 			if(Object.keys(this.participants).length != 0 && this.participants.constructor === Object){
 				this.current = 'trainings';
+				wrapper.querySelector('.vabsform__body--element.trainings .element__body').innerHTML = '';
 				this.getTrainings(wrapper.querySelector('.vabsform__body--element.trainings'));
 				wrapper.querySelector('.vabsform__body--element.participants .element__body').style.height = '0px';
 				wrapper.querySelector('.vabsform__body--element.participants .element__header--index').classList.add('success');
@@ -1055,7 +1086,7 @@ export default class BookingForm{
 			zip_code: this.billing.zip_code,
 			city: this.billing.city,
 			dateFrom: this.dates.anreise,
-			dateto: this.dates.abreise,
+			dateTo: this.dates.abreise,
 			shorttext: `Interesse: ${this.interests[this.billing.interest].name}`,
 			note: this.billing.note,
 			lead: 'true'
@@ -1189,12 +1220,31 @@ export default class BookingForm{
 
 	}
 
-	fetchData(method, data = {}) {
-		return fetch(this.url + '?method=' + method, {
+
+	async fetchData(method, data = {}) {
+		let response = await fetch(this.url + '?method=' + method, {
 			method: 'POST',
 			body: JSON.stringify(data)
-		}).then((response) => {
-			return response.json();
 		});
+
+		let d = await response.json();
+
+		return d;
 	}
+
+	// fetchData(method, data = {}) {
+	// 	const xhr = new XMLHttpRequest();
+	// 	xhr.open('POST', `${this.url}?method=${method}`);
+	// 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	//
+	// 	xhr.onload = function() {
+	// 		if(xhr.status === 200){
+	// 			alert('something went wrong');
+	// 		}else if(xhr.status !== 200){
+	// 			alert('Request failed.  Returned status of ' + xhr.status);
+	// 		}
+	// 	};
+	//
+	// 	xhr.send(JSON.stringify(data))
+	// }
 }

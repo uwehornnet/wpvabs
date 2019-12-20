@@ -122,15 +122,30 @@ export default class ContactWrapper{
 					zip_code: this.user.zip_code,
 					city: this.user.city,
 					note: this.user.note,
-					anreise: this.user.anreise,
-					abreise: this.user.abreise,
-					shorttext: this.user.interest ? 'Interesse: ' + this.user.interest : 'Frontendbuchung',
+					dateFrom: this.user.anreise,
+					dateTo: this.user.abreise,
+					shorttext: 'Interesse: ',
 					longtext: this.user.note,
+					lead: true,
 				})
 			}).then((response) => {
 				return response.json();
 			}).then((response) => {
-				this.reset(form);
+                console.log(`create_contact: ${response}`);
+
+				fetch(this.url + '?method=post_interest', {
+					method: 'POST',
+					body: JSON.stringify({
+						contact_id: response.contact_id,
+						interest_id: this.user.interest
+					})
+				}).then(response => {
+					return response.json();
+				}).then(response => {
+                    console.log(`post_interest: ${response}`);
+				});
+
+                this.reset(form)
 			})
 		}
 	}
@@ -162,9 +177,11 @@ export default class ContactWrapper{
 			this.selectedCourses = {};
 			this.current = 'course';
 
-			form.querySelector('button').disabled = true;
+			form.querySelectorAll('button').forEach(button => {
+				button.disabled = true;
+				button.style.backgroundColor = 'limegreen';
+			}).disabled = true;
 			form.querySelector('button .loading').style.display = 'none';
-			form.querySelector('button').style.backgroundColor = 'limegreen';
 
 		}, 2000);
 

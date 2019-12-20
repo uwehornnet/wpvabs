@@ -346,7 +346,7 @@ export default class VabsWrapper {
 		interests.then((response) => {
 			response.forEach((item) => {
 				const option = document.createElement('option');
-				option.value = item.checkbox_title;
+				option.value = item.id;
 				option.innerHTML = item.checkbox_title;
 
 				form.querySelector('select[name="interest"]').append(option);
@@ -433,7 +433,7 @@ export default class VabsWrapper {
 
 		let html = '<div class="element">';
 		// html += `<div class="element__header"><span class="element__header--index"></span>${ this.lang[lang]['title_persdata'] ? this.lang[lang]['title_persdata'] : 'Fülle deine persönlichen Daten aus' }</div>`;
-		html += `<div class="element__header"><span class="element__header--index"></span>Rechnungsanschrift</div>`;
+		html += `<div class="element__header"><span class="element__header--index"></span>Deine Daten</div>`;
 		html += '<div class="element__body"><div class="form">';
 		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_firstname'] ? this.lang[lang]['form_label_firstname'] : 'Vorname' }</label><input type="text" name="firstname" autocomplete="off" placeholder="Max" required></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_lastname'] ? this.lang[lang]['form_label_lastname'] : 'Vorname' }</label><input type="text" name="lastname" autocomplete="off" placeholder="Müller" required></div></div>`;
 		html += `<div class="form__field horizontal"><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_mobile'] ? this.lang[lang]['form_label_mobile'] : 'Telefonnummer' }</label><input type="text" name="mobile" autocomplete="off" placeholder="+4912345678910"></div><div class="form__field"><label style="display: block;">${ this.lang[lang]['form_label_email'] ? this.lang[lang]['form_label_email'] : 'Emailadresse' }</label><input type="text" name="email" autocomplete="off" placeholder="mail@domain.com" required></div></div>`;

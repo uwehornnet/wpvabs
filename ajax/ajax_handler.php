@@ -20,29 +20,40 @@ $allowed = [
 	'get_course_details',
 	'add_sales_order',
 	'add_sales_line',
-	'assign_course_to_training'
+	'assign_course_to_training',
+    'post_interest'
 ];
 
-if(!isset($_GET['method'])) {
 
+//method check
+if(!isset($_GET['method'])) {
 	echo 'Upps, method not allowed ... ';
 	return;
 }
 
+session_start();
+
+//method allowed check
 if(!in_array($_GET['method'], $allowed)){
 	echo 'Upps, method ' . $_GET['method'] . ' not allowed ... ';
 	return;
 }
 
+// to receive json data
 $_POST = json_decode(file_get_contents('php://input'), true);
 
+
+// global varibales
 define('TOKEN', $config['api_token']);
 define('CLIENT_ID', $config['client_id']);
 define('URL', $config['url']);
 define('REFERRER', $config['referrer']);
 define('VERSION', json_encode($info));
 
+
+// call method based on request
 call_user_func($_GET['method']);
+
 
 function version() {
 	echo VERSION;
@@ -132,7 +143,6 @@ function get_referrer_id()
 		echo "cURL Error #:" . $err;
 	} else {
 		echo $response;
-
 	}
 }
 
@@ -163,7 +173,6 @@ function get_client_data()
 		echo "cURL Error #:" . $err;
 	} else {
 		echo $response;
-
 	}
 }
 
@@ -390,8 +399,8 @@ function create_new_contact()
 		'number' => isset($_POST['number']) ? $_POST['number'] : null,
 		'zip_code' => isset($_POST['zip_code']) ? $_POST['zip_code'] : null,
 		'city' => isset($_POST['city']) ? $_POST['city'] : null,
-		'dateFrom' => isset($_POST['anreise']) ? $_POST['anreise'] : null,
-		'dateTo' => isset($_POST['abreise']) ? $_POST['abreise'] : null,
+		'dateFrom' => isset($_POST['dateFrom']) ? $_POST['dateFrom'] : null,
+		'dateTo' => isset($_POST['dateTo']) ? $_POST['dateTo'] : null,
 		'send_email_request' => 'yes',
 		'create_lead' => isset($_POST['lead']) ? true : false,
 		'shorttext' => isset($_POST['shorttext']) ? $_POST['shorttext'] : null,
